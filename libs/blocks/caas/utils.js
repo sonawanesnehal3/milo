@@ -128,10 +128,12 @@ const buildComplexQuery = (andLogicTags, orLogicTags, notLogicTags) => {
   orQuery = orQuery.length ? wrapInParens(orQuery) : '';
   notQuery = notQuery.length ? wrapInParens(notQuery) : '';
 
-  return encodeURIComponent(`${andQuery}${
-    andQuery && orQuery ? '+AND+' : ''}${orQuery}${
-    andQuery && notQuery ? '+NOT+' : ''}${
-    orQuery && notQuery ? '+NOT+' : ''}${notQuery}`);
+  return (andQuery || orQuery)
+    ? encodeURIComponent(`${andQuery}${
+      andQuery && orQuery ? '+AND+' : ''}${orQuery}${
+      andQuery && notQuery ? '+NOT+' : ''}${
+      orQuery && notQuery ? '+NOT+' : ''}${notQuery}`)
+    : '';
 };
 
 const getSortOptions = (state, strs) => {
