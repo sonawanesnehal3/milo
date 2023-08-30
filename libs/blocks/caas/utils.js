@@ -130,7 +130,8 @@ const buildComplexQuery = (andLogicTags, orLogicTags, notLogicTags) => {
 
   return encodeURIComponent(`${andQuery}${
     andQuery && orQuery ? '+AND+' : ''}${orQuery}${
-    notQuery ? '+NOT+' : ''}${notQuery}`);
+    andQuery && notQuery ? '+NOT+' : ''}${
+    orQuery && notQuery ? '+NOT+' : ''}${notQuery}`);
 };
 
 const getSortOptions = (state, strs) => {
