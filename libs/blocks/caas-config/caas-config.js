@@ -416,6 +416,11 @@ const TagsPanel = ({ tagsData }) => {
       title="NOT logic Tags"
       subTitle=""
     >
+    <${FormSelect}
+        label="Intra Tag Logic"
+        name="intraTagLogicExclude"
+        options=${defaultOptions.intraTagLogicOptions}
+      />
     <${TagSelect} id="notTags" options=${allTags} label="Tags"
   /><//>
   `;

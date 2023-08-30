@@ -120,9 +120,9 @@ const buildComplexQuery = (andLogicTags, orLogicTags, notLogicTags) => {
     .join('+OR+');
 
   let notQuery = notLogicTags
-    .filter((tag) => tag.notTags.length)
-    .map((tag) => wrapInParens(tag.notTags.map((val) => `"${val}"`).join('+NOT+')))
-    .join('+NOT+');
+    .filter((tag) => tag.intraTagLogicExclude !== '' && tag.notTags.length)
+    .map((tag) => wrapInParens(tag.notTags.map((val) => `"${val}"`).join(`+${tag.intraTagLogicExclude}+`)))
+    .join('+AND+');
 
   andQuery = andQuery.length ? wrapInParens(andQuery) : '';
   orQuery = orQuery.length ? wrapInParens(orQuery) : '';
