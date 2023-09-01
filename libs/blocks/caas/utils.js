@@ -131,8 +131,7 @@ const buildComplexQuery = (andLogicTags, orLogicTags, notLogicTags) => {
   return (andQuery || orQuery)
     ? encodeURIComponent(`${andQuery}${
       andQuery && orQuery ? '+AND+' : ''}${orQuery}${
-      andQuery && notQuery ? '+NOT+' : ''}${
-      orQuery && notQuery ? '+NOT+' : ''}${notQuery}`)
+      (andQuery || orQuery) && notQuery ? '+AND+NOT+' : ''}${notQuery}`)
     : '';
 };
 
