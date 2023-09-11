@@ -472,7 +472,10 @@ const props = {
       : getDateProp(lastModified || doc.lastModified, `document.lastModified is not a valid date: ${doc.lastModified}`);
   },
   origin: (s) => s || getOrigin(),
-  playurl: (s) => checkUrl(s, `Invalid PlayURL: ${s}`),
+  playurl: (s) => {
+    const url = s.indexOf('href=') ? s.substring(s.indexOf('>')+1, s.indexOf('<')) : s;
+    checkUrl(url, `Invalid PlayURL: ${url}`)
+  },
   primarytag: (s) => {
     const tag = getTag(s);
     return tag ? { id: tag.tagID } : {};
