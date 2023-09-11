@@ -145,7 +145,7 @@ const prefixHttps = (url) => {
 
 const checkUrl = (url, errorMsg) => {
   if (url === undefined) return url;
-  const flatUrl = (link.indexOf('href=')) ?  flattenUrl(url) : url;
+  const flatUrl = (url.indexOf('href=')) ? flattenUrl(url) : url;
   return isValidUrl(flatUrl) ? prefixHttps(flatUrl) : { error: errorMsg };
 };
 
