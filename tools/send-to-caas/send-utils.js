@@ -145,7 +145,14 @@ const prefixHttps = (url) => {
 
 const checkUrl = (url, errorMsg) => {
   if (url === undefined) return url;
-  return isValidUrl(url) ? prefixHttps(url) : { error: errorMsg };
+  const flatUrl = (link.indexOf('href=')) ?  flattenUrl(url) : url;
+  return isValidUrl(flatUrl) ? prefixHttps(flatUrl) : { error: errorMsg };
+};
+
+const flattenUrl = (link) => {
+  var htmlElement = document.createElement('div');
+  htmlElement.innerHTML = link;
+  return htmlElement.querySelector('a').getAttribute('href');
 };
 
 // Case-insensitive search through tag name, path, id and title for the searchStr
