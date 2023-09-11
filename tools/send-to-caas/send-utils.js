@@ -143,16 +143,16 @@ const prefixHttps = (url) => {
   return url;
 };
 
-const checkUrl = (url, errorMsg) => {
-  if (url === undefined) return url;
-  const flatUrl = (url.indexOf('href=')) ? flattenUrl(url) : url;
-  return isValidUrl(flatUrl) ? prefixHttps(flatUrl) : { error: errorMsg };
-};
-
 const flattenUrl = (link) => {
   var htmlElement = document.createElement('div');
   htmlElement.innerHTML = link;
   return htmlElement.querySelector('a').getAttribute('href');
+};
+
+const checkUrl = (url, errorMsg) => {
+  if (url === undefined) return url;
+  const flatUrl = (url.indexOf('href=')) ? flattenUrl(url) : url;
+  return isValidUrl(flatUrl) ? prefixHttps(flatUrl) : { error: errorMsg };
 };
 
 // Case-insensitive search through tag name, path, id and title for the searchStr
