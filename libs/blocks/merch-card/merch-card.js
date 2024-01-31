@@ -127,16 +127,22 @@ const parseContent = (el, merchCard) => {
   ];
   let bodySlotName = 'body-xs';
   let headingMCount = 0;
+
   if (merchCard.variant === MINI_COMPARE_CHART) {
     bodySlotName = 'body-m';
   }
+
   const bodySlot = createTag('div', { slot: bodySlotName });
 
   innerElements.forEach((element) => {
     const { tagName } = element;
-    if (tagName === 'EM' && !element.querySelector('a')) {
-      const promoText = createTag('p', { class: 'promo-text' }, element.innerHTML);
-      element.replaceWith(promoText);
+    if (tagName === 'H5' && merchCard.variant === MINI_COMPARE_CHART) {
+      const promoText = createTag(
+        'p',
+        { slot: 'promo-text', class: 'promo-text' },
+        element.innerHTML,
+      );
+      merchCard.append(promoText);
     }
     if (isHeadingTag(tagName)) {
       let slotName = textStyles[tagName];
@@ -159,6 +165,7 @@ const parseContent = (el, merchCard) => {
       merchCard.append(bodySlot);
     }
   });
+
   if (merchCard.variant === MINI_COMPARE_CHART && merchCard.childNodes[1]) {
     merchCard.insertBefore(bodySlot, merchCard.childNodes[1]);
   }
@@ -433,14 +440,18 @@ const init = async (el) => {
   if (MULTI_OFFER_CARDS.includes(cardType)) {
     const quantitySelect = extractQuantitySelect(el);
     const offerSelection = el.querySelector('ul');
-    const bodySlotName = `body-${merchCard.variant !== MINI_COMPARE_CHART ? 'xs' : 'm'}`;
     if (offerSelection) {
       const { initOfferSelection } = await import('./merch-offer-select.js');
       initOfferSelection(merchCard, offerSelection, quantitySelect);
     }
     if (quantitySelect) {
-      const bodySlot = merchCard.querySelector(`div[slot="${bodySlotName}"]`);
-      bodySlot.append(quantitySelect);
+      if (merchCard.variant === MINI_COMPARE_CHART) {
+        const quantitySelectContainer = createTag('div', { slot: 'quantity-select' }, quantitySelect);
+        merchCard.appendChild(quantitySelectContainer);
+      } else {
+        const bodySlot = merchCard.querySelector('div[slot="xs"]');
+        bodySlot.append(quantitySelect);
+      }
     }
   }
 
