@@ -41,7 +41,7 @@ function createMerchOffer(option, quantitySelector) {
 const isHorizontal = (offerSelection) => [...offerSelection.querySelectorAll('merch-offer')].map((o) => o.text).every((t) => /^\d+.B$/.test(t));
 
 export const initOfferSelection = (merchCard, offerSelection, quantitySelector) => {
-  const bodySlot = merchCard.querySelector('div[slot="body-xs"]');
+  const bodySlot = merchCard.querySelector(`div[slot="${merchCard.variant === 'mini-compare-chart' ? 'body-m' : 'body-xs'}"]`);
   if (!bodySlot) return;
   createDynamicSlots(merchCard, bodySlot);
   const merchOffers = createTag('merch-offer-select', { container: 'merch-card' });

@@ -278,8 +278,8 @@ function extractQuantitySelect(el) {
 }
 
 const getMiniCompareChartFooterRows = (el) => {
-  let footerRows = [];
-  footerRows = Array.from(el.children).slice(1);
+  let footerRows = Array.from(el.children).slice(1);
+  footerRows = footerRows.filter((row) => row.querySelector('picture') !== null);
   footerRows.forEach((row) => row.remove());
   return footerRows;
 };
@@ -301,6 +301,13 @@ const decorateFooterRows = (merchCard, footerRows) => {
     });
     merchCard.appendChild(footerRowsSlot);
   }
+};
+
+const setMiniCompareOfferSlot = (merchCard, offers) => {
+  if (merchCard.variant !== MINI_COMPARE_CHART) return;
+  const miniCompareOffers = createTag('div', { slot: 'offers' }, offers);
+  if (offers === undefined) { miniCompareOffers.appendChild(createTag('p')); }
+  merchCard.appendChild(miniCompareOffers);
 };
 
 const init = async (el) => {
@@ -442,12 +449,12 @@ const init = async (el) => {
     const offerSelection = el.querySelector('ul');
     if (offerSelection) {
       const { initOfferSelection } = await import('./merch-offer-select.js');
+      setMiniCompareOfferSlot(merchCard, undefined);
       initOfferSelection(merchCard, offerSelection, quantitySelect);
     }
     if (quantitySelect) {
       if (merchCard.variant === MINI_COMPARE_CHART) {
-        const quantitySelectContainer = createTag('div', { slot: 'quantity-select' }, quantitySelect);
-        merchCard.appendChild(quantitySelectContainer);
+        setMiniCompareOfferSlot(merchCard, quantitySelect);
       } else {
         const bodySlot = merchCard.querySelector('div[slot="xs"]');
         bodySlot.append(quantitySelect);
