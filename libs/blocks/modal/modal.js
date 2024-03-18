@@ -17,13 +17,13 @@ export function findDetails(hash, el) {
   return { id, path, isHash: hash === window.location.hash };
 }
 
-export function sendAnalytics(event) {
+export function sendAnalytics(event, data = null) {
   // eslint-disable-next-line no-underscore-dangle
   window._satellite?.track('event', {
     xdm: {},
     data: {
       web: { webInteraction: { name: event?.type } },
-      _adobe_corpnew: { digitalData: event?.data },
+      _adobe_corpnew: { digitalData: data },
     },
   });
 }
@@ -35,8 +35,8 @@ export function closeModal(modal) {
   const localeModal = id?.includes('locale-modal') ? 'localeModal' : 'milo';
   const analyticsEventName = window.location.hash ? window.location.hash.replace('#', '') : localeModal;
   const closeEventAnalytics = new Event(`${analyticsEventName}:modalClose:buttonClose`);
-
-  sendAnalytics(closeEventAnalytics);
+  const data = window.alloy_all.data._adobe_corpnew;
+  sendAnalytics(closeEventAnalytics, data);
 
   document.querySelectorAll(`#${id}`).forEach((mod) => {
     if (mod.classList.contains('dialog-modal')) {
