@@ -1,4 +1,4 @@
-// import branchInit from "../../deps/branch-io.js";
+const { loadPrivacy } = await import('../../scripts/delayed.js');
 
 async function getKey(product) {
   //const resp = await fetch(`${config.contentRoot ?? ''}/branch-io-key-mapping.json`);
@@ -73,5 +73,6 @@ export default async function init(el) {
   const product = row.textContent.trim();
   row.innerHTML = '';
   const key = await getKey(product);
+  try { await loadPrivacy(); } catch { return; }
   branchInit(header, key);
 }
