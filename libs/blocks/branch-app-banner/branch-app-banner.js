@@ -60,6 +60,7 @@ function branchInit(header, key) {
     });
   }
   // initBranch();
+  loadPrivacy();
   ['adobePrivacy:PrivacyConsent', 'adobePrivacy:PrivacyReject', 'adobePrivacy:PrivacyCustom']
       .forEach(function (event) {
           window.addEventListener(event, initBranch);
@@ -73,6 +74,5 @@ export default async function init(el) {
   const product = row.textContent.trim();
   row.innerHTML = '';
   const key = await getKey(product);
-  try { await loadPrivacy(); } catch { return; }
   branchInit(header, key);
 }
