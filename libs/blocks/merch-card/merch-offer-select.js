@@ -25,7 +25,7 @@ function createDynamicSlots(el, bodySlot) {
       const descriptionSlot = el.querySelector('p[slot="description"]');
       if (descriptionSlot) {
         descriptionSlot.innerHTML += description.innerHTML;
-        description.parentNode.removeChild(description);
+        description.remove();
       }
     }
   }
