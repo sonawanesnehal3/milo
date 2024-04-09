@@ -1,5 +1,5 @@
 import { createTag, getConfig, getMetadata, loadStyle, MILO_EVENTS } from '../../utils/utils.js';
-import { NON_TRACKED_MANIFEST_TYPE, getFileName } from './personalization.js';
+import { TRACKED_MANIFEST_TYPE, getFileName } from './personalization.js';
 
 function updatePreviewButton() {
   const selectedInputs = document.querySelectorAll(
@@ -28,7 +28,7 @@ function updatePreviewButton() {
   });
 
   const simulateHref = new URL(window.location.href);
-  simulateHref.searchParams.set('mep', manifestParameter.join(','));
+  simulateHref.searchParams.set('mep', manifestParameter.join('---'));
 
   const mepHighlightCheckbox = document.querySelector(
     '.mep-popup input[type="checkbox"]#mepHighlightCheckbox',
@@ -113,7 +113,11 @@ function addPillEventListeners(div) {
     a.addEventListener('click', () => {
       if (a.getAttribute('href')) return false;
       const w = window.open('', '_blank');
-      w.document.write('<html><head></head><body>Please wait while we redirect you</body></html>');
+      w.document.write(`<html><head></head><body>
+        Please wait while we redirect you. 
+        If you are not redirected, please check that you are signed into the AEM sidekick
+        and try again.
+        </body></html>`);
       w.document.close();
       w.focus();
       getEditManifestUrl(a, w);
@@ -173,10 +177,10 @@ function createPreviewPill(manifests) {
     const targetTitle = name ? `${name}<br><i>${manifestFileName}</i>` : manifestFileName;
     const scheduled = manifest.event
       ? `<p>Scheduled - ${manifest.disabled ? 'inactive' : 'active'}</p>
-        <p>On: ${manifest.event.start?.toLocaleString()}</p>
+         <p>On: ${manifest.event.start?.toLocaleString()} - <a target= "_blank" href="?instant=${manifest.event.start?.toISOString()}">instant</a></p>
          <p>Off: ${manifest.event.end?.toLocaleString()}</p>` : '';
     let analyticsTitle = '';
-    if (manifestType === NON_TRACKED_MANIFEST_TYPE) {
+    if (manifestType === TRACKED_MANIFEST_TYPE) {
       analyticsTitle = 'N/A for this manifest type';
     } else if (manifestOverrideName) {
       analyticsTitle = manifestOverrideName;
@@ -199,7 +203,7 @@ function createPreviewPill(manifests) {
   const personalizationOn = getMetadata('personalization');
   const personalizationOnText = personalizationOn && personalizationOn !== '' ? 'on' : 'off';
   const simulateHref = new URL(window.location.href);
-  simulateHref.searchParams.set('manifest', manifestParameter.join(','));
+  simulateHref.searchParams.set('manifest', manifestParameter.join('---'));
 
   const config = getConfig();
   let mepHighlightChecked = '';
