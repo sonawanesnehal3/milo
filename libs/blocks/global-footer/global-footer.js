@@ -25,7 +25,6 @@ import {
 import { replaceKey } from '../../features/placeholders.js';
 
 import './global-footer.css';
-import '../../styles/styles.css'
 
 const { miloLibs, codeRoot, locale, mep } = getConfig();
 const base = miloLibs || codeRoot;
@@ -366,6 +365,7 @@ class Footer {
 
 export default function init(block) {
   try {
+    block.classList.add('global-footer');
     const footer = new Footer({ block });
     return footer;
   } catch (e) {

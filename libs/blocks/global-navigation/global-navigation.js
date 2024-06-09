@@ -1175,6 +1175,7 @@ export default async function init(block, consumerConfig) {
         tags: 'errorType=error,module=gnav',
       }));
     if (!content) return null;
+    block.classList.add('global-navigation');
     const gnav = new Gnav({
       content,
       block,
