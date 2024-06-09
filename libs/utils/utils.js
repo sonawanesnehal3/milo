@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
 
+import {
+  getCustomConfig,
+} from '../blocks/global-navigation/global-navigation.js';
+
 const MILO_TEMPLATES = [
   '404',
   'featured-story',
@@ -815,7 +819,7 @@ export async function loadIms() {
     };
     const path = PAGE_URL.searchParams.get('useAlternateImsDomain')
       ? 'https://auth.services.adobe.com/imslib/imslib.min.js'
-      : `${base}/deps/imslib.min.js`;
+      : `https://main--milo--adobecom.hlx.page/libs/deps/imslib.min.js`;
     loadScript(path);
   }).then(() => {
     if (!window.adobeIMS?.isSignedInUser()) {
