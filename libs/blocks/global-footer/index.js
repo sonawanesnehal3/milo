@@ -1,7 +1,3 @@
-import globalFooter from './global-footer.js';
-import * as globalFooterCSS from './global-footer.css'
 
-export {
-  globalFooter,
-  globalFooterCSS
-};
+import "../global-footer/global-footer.js";
+import "../global-footer/global-footer.css";

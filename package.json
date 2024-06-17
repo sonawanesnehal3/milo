@@ -16,8 +16,11 @@
     "build:htm-preact": "microbundle ./build/htm-preact.js -o ./libs/deps/htm-preact.js -f modern --no-sourcemap --target web; mv ./libs/deps/htm-preact.modern.mjs ./libs/deps/htm-preact.js",
     "build:preact-debug": "microbundle ./build/htm-preact-debug.js -o ./libs/deps/htm-preact-debug.js -f modern --no-sourcemap --target web; mv ./libs/deps/htm-preact-debug.modern.mjs ./libs/deps/htm-preact-debug.js",
     "build:gnav-profile": "microbundle ./libs/blocks/global-navigation/blocks/profile/profile-wrapper.js -o ./build/profile-wrapper-build.js -f umd --external none --no-sourcemap --target web; mv ./build/profile-wrapper-build.umd.js ./build/profile.js",
-    "build:global-navigation": "vite build --config vite.config.global-navigation.js",
-    "build:global-footer": "vite build --config vite.config.global-footer.js"
+    "build:global-navigation": "vite build --config vite.config.global-navigation.js; mv ./dist/global-navigation/global-navigation.mjs ./dist/global-navigation/global-navigation.js",
+    "build:global-footer": "vite build --config vite.config.global-footer.js; mv ./dist/global-footer/global-footer.mjs ./dist/global-footer/global-footer.js",
+    "build:global-navigation-mb": "microbundle ./libs/blocks/global-navigation/global-navigation.js -o ./dist/global-navigation/global-navigation.js -f es --no-sourcemap --target web",
+    "build:global-footer-mb": "microbundle ./libs/blocks/global-footer/global-footer.js -o ./dist/global-footer/global-footer.js -f cjs,esm --no-compress --sourcemap",
+    "build:global-footer-mb_config": "microbundle --config microbundle.config.js"
   },
   "repository": {
     "type": "git",
@@ -35,8 +38,10 @@
     "preact": "^10.11.0"
   },
   "devDependencies": {
-    "@babel/core": "7.17.7",
-    "@babel/eslint-parser": "7.17.0",
+    "@babel/core": "^7.17.7",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/plugin-transform-for-of": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@octokit/rest": "^20.0.2",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -52,7 +57,7 @@
     "eslint-plugin-ecmalist": "^1.0.8",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "microbundle": "0.15.1",
+    "microbundle": "^0.15.1",
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",

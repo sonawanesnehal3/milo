@@ -209,7 +209,7 @@ export async function loadDecorateMenu() {
   });
 
   const [{ decorateMenu, decorateLinkGroup }] = await Promise.all([
-    loadBlock('./menu/menu.js'),
+    loadBlock('https://main--milo--adobecom.hlx.page/libs/blocks/global-navigation/utilities/menu/menu.js'),
     loadStyles('utilities/menu/menu.css'),
   ]);
 

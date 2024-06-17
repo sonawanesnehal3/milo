@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-for-of"
+    // Add other necessary plugins
+  ]
+}

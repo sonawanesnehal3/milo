@@ -1,9 +1,5 @@
 /* eslint-disable no-console */
 
-import {
-  getCustomConfig,
-} from '../blocks/global-navigation/global-navigation.js';
-
 const MILO_TEMPLATES = [
   '404',
   'featured-story',
