@@ -4,6 +4,7 @@ import {
   decorateLinks,
   getMetadata,
   getConfig,
+  setConfig,
   loadBlock,
 } from '../../utils/utils.js';
 
@@ -361,8 +362,10 @@ class Footer {
   };
 }
 
+
 export default function init(block) {
   try {
+    debugger
     const footer = new Footer({ block });
     return footer;
   } catch (e) {
