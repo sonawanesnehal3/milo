@@ -1,9 +1,5 @@
 /* eslint-disable no-console */
 
-import {
-  getCustomConfig,
-} from '../blocks/global-navigation/global-navigation.js';
-
 const MILO_TEMPLATES = [
   '404',
   'featured-story',
@@ -45,6 +41,7 @@ const MILO_BLOCKS = [
   'icon-block',
   'iframe',
   'instagram',
+  'locui',
   'marketo',
   'marquee',
   'marquee-anchors',
@@ -142,6 +139,9 @@ export const MILO_EVENTS = { DEFERRED: 'milo:deferred' };
 
 const LANGSTORE = 'langstore';
 const PAGE_URL = new URL(window.location.href);
+const SLD = PAGE_URL.hostname.includes('.aem.') ? 'aem' : 'hlx';
+
+const PROMO_PARAM = 'promo';
 
 function getEnv(conf) {
   const { host } = window.location;
@@ -150,8 +150,8 @@ function getEnv(conf) {
   if (query) return { ...ENVS[query], consumer: conf[query] };
   if (host.includes('localhost')) return { ...ENVS.local, consumer: conf.local };
   /* c8 ignore start */
-  if (host.includes('hlx.page')
-    || host.includes('hlx.live')
+  if (host.includes(`${SLD}.page`)
+    || host.includes(`${SLD}.live`)
     || host.includes('stage.adobe')
     || host.includes('corp.adobe')) {
     return { ...ENVS.stage, consumer: conf.stage };
@@ -234,7 +234,7 @@ export const [setConfig, updateConfig, getConfig] = (() => {
         console.log('Invalid or missing locale:', e);
       }
       config.locale.contentRoot = `${origin}${config.locale.prefix}${config.contentRoot ?? ''}`;
-      config.useDotHtml = !PAGE_URL.origin.includes('.hlx.')
+      config.useDotHtml = !PAGE_URL.origin.includes(`.${SLD}.`)
         && (conf.useDotHtml ?? PAGE_URL.pathname.endsWith('.html'));
       config.entitlements = handleEntitlements;
       config.consumerEntitlements = conf.entitlements || [];
@@ -493,7 +493,7 @@ export function decorateSVG(a) {
       ? new URL(`${window.location.origin}${a.href}`)
       : new URL(a.href);
 
-    const src = textUrl.hostname.includes('.hlx.') ? textUrl.pathname : textUrl;
+    const src = textUrl.hostname.includes(`.${SLD}.`) ? textUrl.pathname : textUrl;
 
     const img = createTag('img', { loading: 'lazy', src });
     if (altText) img.alt = altText;
@@ -519,7 +519,7 @@ export function decorateImageLinks(el) {
     const [source, alt, icon] = img.alt.split('|');
     try {
       const url = new URL(source.trim());
-      const href = url.hostname.includes('.hlx.') ? `${url.pathname}${url.hash}` : url.href;
+      const href = url.hostname.includes(`.${SLD}.`) ? `${url.pathname}${url.hash}` : url.href;
       if (alt?.trim().length) img.alt = alt.trim();
       const pic = img.closest('picture');
       const picParent = pic.parentElement;
@@ -612,12 +612,16 @@ export function decorateAutoBlock(a) {
 }
 
 export function decorateLinks(el) {
+  const config = getConfig();
   decorateImageLinks(el);
   const anchors = el.getElementsByTagName('a');
   return [...anchors].reduce((rdx, a) => {
     appendHtmlToLink(a);
     a.href = localizeLink(a.href);
     decorateSVG(a);
+    if (config.env?.name === 'stage' && config.stageDomainsMap?.[a.hostname]) {
+      a.href = a.href.replace(a.hostname, config.stageDomainsMap[a.hostname]);
+    }
     if (a.href.includes('#_blank')) {
       a.setAttribute('target', '_blank');
       a.href = a.href.replace('#_blank', '');
@@ -629,6 +633,15 @@ export function decorateLinks(el) {
       if (autoBlock) {
         rdx.push(a);
       }
+    }
+    // Custom action links
+    const loginEvent = '#_evt-login';
+    if (a.href.includes(loginEvent)) {
+      a.href = a.href.replace(loginEvent, '');
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.adobeIMS?.signIn();
+      });
     }
     return rdx;
   }, []);
@@ -683,7 +696,9 @@ function decorateHeader() {
   const baseBreadcrumbs = getMetadata('breadcrumbs-base')?.length;
   const breadcrumbs = document.querySelector('.breadcrumbs');
   const autoBreadcrumbs = getMetadata('breadcrumbs-from-url') === 'on';
-  if (baseBreadcrumbs || breadcrumbs || autoBreadcrumbs) header.classList.add('has-breadcrumbs');
+  const dynamicNavActive = getMetadata('dynamic-nav') === 'on'
+    && window.sessionStorage.getItem('gnavSource') !== null;
+  if (!dynamicNavActive && (baseBreadcrumbs || breadcrumbs || autoBreadcrumbs)) header.classList.add('has-breadcrumbs');
   if (breadcrumbs) header.append(breadcrumbs);
   const promo = getMetadata('gnav-promo-source');
   if (promo?.length) header.classList.add('has-promo');
@@ -794,7 +809,9 @@ export async function decorateFooterPromo(doc = document) {
 let imsLoaded;
 export async function loadIms() {
   imsLoaded = imsLoaded || new Promise((resolve, reject) => {
-    const { locale, imsClientId, imsScope, env, base } = getConfig();
+    const {
+      locale, imsClientId, imsScope, env, base, adobeid,
+    } = getConfig();
     if (!imsClientId) {
       reject(new Error('Missing IMS Client ID'));
       return;
@@ -816,10 +833,11 @@ export async function loadIms() {
         clearTimeout(timeout);
       },
       onError: reject,
+      ...adobeid,
     };
     const path = PAGE_URL.searchParams.get('useAlternateImsDomain')
       ? 'https://auth.services.adobe.com/imslib/imslib.min.js'
-      : `https://main--milo--adobecom.hlx.page/libs/deps/imslib.min.js`;
+      : `${base}/deps/imslib.min.js`;
     loadScript(path);
   }).then(() => {
     if (!window.adobeIMS?.isSignedInUser()) {
@@ -830,7 +848,11 @@ export async function loadIms() {
   return imsLoaded;
 }
 
-export async function loadMartech({ persEnabled = false, persManifests = [] } = {}) {
+export async function loadMartech({
+  persEnabled = false,
+  persManifests = [],
+  postLCP = false,
+} = {}) {
   // eslint-disable-next-line no-underscore-dangle
   if (window.marketingtech?.adobe?.launch && window._satellite) {
     return true;
@@ -845,7 +867,7 @@ export async function loadMartech({ persEnabled = false, persManifests = [] } = 
   loadIms().catch(() => {});
 
   const { default: initMartech } = await import('../martech/martech.js');
-  await initMartech({ persEnabled, persManifests });
+  await initMartech({ persEnabled, persManifests, postLCP });
 
   return true;
 }
@@ -857,12 +879,40 @@ const getMepValue = (val) => {
   return finalVal;
 };
 
+const getMdValue = (key) => {
+  const value = getMetadata(key);
+  if (value) {
+    return getMepValue(value);
+  }
+  return false;
+};
+
+const getPromoMepEnablement = () => {
+  const mds = [
+    'apac_manifestnames',
+    'emea_manifestnames',
+    'americas_manifestnames',
+    'jp_manifestnames',
+    'manifestnames',
+  ];
+  const mdObject = mds.reduce((obj, key) => {
+    const val = getMdValue(key);
+    if (val) {
+      obj[key] = val;
+    }
+    return obj;
+  }, {});
+  if (Object.keys(mdObject).length) {
+    return mdObject;
+  }
+  return false;
+};
+
 export const getMepEnablement = (mdKey, paramKey = false) => {
   const paramValue = PAGE_URL.searchParams.get(paramKey || mdKey);
   if (paramValue) return getMepValue(paramValue);
-  const mdValue = getMetadata(mdKey);
-  if (!mdValue) return false;
-  return getMepValue(mdValue);
+  if (PROMO_PARAM === paramKey) return getPromoMepEnablement();
+  return getMdValue(mdKey);
 };
 
 export const combineMepSources = async (persEnabled, promoEnabled, mepParam) => {
@@ -906,7 +956,7 @@ async function checkForPageMods() {
   const { mep: mepParam } = Object.fromEntries(PAGE_URL.searchParams);
   if (mepParam === 'off') return;
   const persEnabled = getMepEnablement('personalization');
-  const promoEnabled = getMepEnablement('manifestnames', 'promo');
+  const promoEnabled = getMepEnablement('manifestnames', PROMO_PARAM);
   const targetEnabled = getMepEnablement('target');
   const mepEnabled = persEnabled || targetEnabled || promoEnabled || mepParam;
   if (!mepEnabled) return;
@@ -938,15 +988,15 @@ async function checkForPageMods() {
 }
 
 async function loadPostLCP(config) {
-  const georouting = getMetadata('georouting') || config.geoRouting;
-  if (georouting === 'on') {
-    const { default: loadGeoRouting } = await import('../features/georoutingv2/georoutingv2.js');
-    await loadGeoRouting(config, createTag, getMetadata, loadBlock, loadStyle);
-  }
   if (config.mep?.targetEnabled === 'gnav') {
     await loadMartech({ persEnabled: true, postLCP: true });
   } else {
     loadMartech();
+  }
+  const georouting = getMetadata('georouting') || config.geoRouting;
+  if (georouting === 'on') {
+    const { default: loadGeoRouting } = await import('../features/georoutingv2/georoutingv2.js');
+    await loadGeoRouting(config, createTag, getMetadata, loadBlock, loadStyle);
   }
   const header = document.querySelector('header');
   if (header) {
@@ -964,7 +1014,7 @@ async function loadPostLCP(config) {
 }
 
 export function scrollToHashedElement(hash) {
-  if (!hash) return;
+  if (!hash || /=/.test(hash)) return; // skip if hash is used for deeplinking.
   const elementId = decodeURIComponent(hash).slice(1);
   let targetElement;
   try {
@@ -1027,7 +1077,7 @@ function initSidekick() {
 
 function decorateMeta() {
   const { origin } = window.location;
-  const contents = document.head.querySelectorAll('[content*=".hlx."]');
+  const contents = document.head.querySelectorAll(`[content*=".${SLD}."]`);
   contents.forEach((meta) => {
     if (meta.getAttribute('property') === 'hlx:proxyUrl') return;
     try {
