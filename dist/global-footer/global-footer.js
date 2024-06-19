@@ -24219,4 +24219,4 @@ const caasTags$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
   default: caasTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { init$7 as default };
+export { init$7 as GlobalFooter };

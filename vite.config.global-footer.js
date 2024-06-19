@@ -6,9 +6,9 @@ export default defineConfig({
     target: "esnext",
     minify: false,
     lib: {
-      entry: path.resolve(__dirname, 'libs/blocks/global-footer/global-footer.js'),
+      entry: path.resolve(__dirname, 'libs/blocks/global-footer/footerbuild.js'),
        name: 'GlobalFooter',
-       fileName: `global-footer`,
+       fileName: (format) => `global-footer.${format === 'es' ? 'js' : 'umd.js'}`,
     },
     outDir: path.resolve(__dirname, 'dist/global-footer'),
     rollupOptions: {
