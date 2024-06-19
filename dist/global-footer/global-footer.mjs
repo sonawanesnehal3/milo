@@ -2106,8 +2106,10 @@ class Footer {
   };
 }
 
+
 function init$7(block) {
   try {
+    debugger
     const footer = new Footer({ block });
     return footer;
   } catch (e) {
@@ -24218,4 +24220,4 @@ const caasTags$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
   default: caasTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { init$7 as default };
+export { init$7 as GlobalFooterJS };

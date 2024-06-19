@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.GlobalFooter = factory());
-})(this, (function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.GlobalFooter = {}));
+})(this, (function (exports) { 'use strict';
 
   /* eslint-disable no-console */
 
@@ -2112,8 +2112,10 @@
     };
   }
 
+
   function init$7(block) {
     try {
+      debugger
       const footer = new Footer({ block });
       return footer;
     } catch (e) {
@@ -24224,6 +24226,8 @@
     default: caasTags
   }, Symbol.toStringTag, { value: 'Module' }));
 
-  return init$7;
+  exports.GlobalFooterJS = init$7;
+
+  Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
 }));
