@@ -4,6 +4,7 @@ import {
   decorateLinks,
   getMetadata,
   getConfig,
+  setConfig,
   loadBlock,
 } from '../../utils/utils.js';
 
@@ -23,6 +24,8 @@ import {
 } from '../global-navigation/utilities/utilities.js';
 
 import { replaceKey } from '../../features/placeholders.js';
+
+import customConfig from '../../scripts/scripts.js';
 
 const { miloLibs, codeRoot, locale, mep } = getConfig();
 const base = miloLibs || codeRoot;
@@ -361,8 +364,14 @@ class Footer {
   };
 }
 
-export default function init(block) {
+export default function init(block, consumerConfig) {
   try {
+    if(consumerConfig){
+      console.log(block);
+      console.log(customConfig);
+      console.log(consumerConfig);
+      setConfig({...customConfig, ...consumerConfig});
+    }
     const footer = new Footer({ block });
     return footer;
   } catch (e) {

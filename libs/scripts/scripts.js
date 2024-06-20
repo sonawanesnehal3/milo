@@ -168,3 +168,5 @@ const eagerLoad = (img) => {
   loadLana({ clientId: 'milo' });
   await loadArea();
 }());
+
+export default config;
