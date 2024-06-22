@@ -1689,7 +1689,7 @@
     });
 
     const [{ decorateMenu, decorateLinkGroup }] = await Promise.all([
-      loadBlock$1('./menu/menu.js'),
+      loadBlock$1(`${federatedContentRoot}/libs/blocks/global-navigation/utilities/menu/menu.js`),
       loadStyles('utilities/menu/menu.css'),
     ]);
 

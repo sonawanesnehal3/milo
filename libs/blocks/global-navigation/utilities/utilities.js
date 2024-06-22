@@ -211,7 +211,7 @@ export async function loadDecorateMenu() {
   });
 
   const [{ decorateMenu, decorateLinkGroup }] = await Promise.all([
-    loadBlock('./menu/menu.js'),
+    loadBlock(`${federatedContentRoot}/libs/blocks/global-navigation/utilities/menu/menu.js`),
     loadStyles('utilities/menu/menu.css'),
   ]);
 
