@@ -70,7 +70,7 @@ class Footer {
   decorateContent = () => logErrorFor(async () => {
     // Fetch footer content
     let nonMiloFooterUrl = combinedConfig && combinedConfig.nonMiloFooterUrl || '';
-    const url = nonMiloFooterUrl ? nonMiloFooterUrl : getMetadata('footer-source') || `${locale.contentRoot}/footer`;
+    const url = nonMiloFooterUrl || getMetadata('footer-source') || `${locale.contentRoot}/footer`;
     this.body = await fetchAndProcessPlainHtml({
       url,
       shouldDecorateLinks: false,
@@ -154,7 +154,7 @@ class Footer {
   };
 
   loadIcons = async () => {
-    const file = await fetch(`${base}/blocks/global-footer/icons.svg`);
+    const file = await fetch(`${base !== undefined ? base : getConfig().miloLibs}/blocks/global-footer/icons.svg`);
 
     const content = await file.text();
     const elem = toFragment`<div class="feds-footer-icons">${content}</div>`;
