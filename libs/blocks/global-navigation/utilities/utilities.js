@@ -197,13 +197,13 @@ export async function loadBaseStyles() {
   await loadStyles('base.css');
 }
 
+const menuModule = import.meta.glob('./menu/menu.js');
 export function loadBlock(path) {
-  return import(path).then((module) => module.default);
+  return menuModule[path]().then((module) => module.default);
 }
 
 let cachedDecorateMenu;
 export async function loadDecorateMenu() {
-  const { miloLibs, codeRoot } = getConfig();
   if (cachedDecorateMenu) return cachedDecorateMenu;
 
   let resolve;
@@ -212,7 +212,7 @@ export async function loadDecorateMenu() {
   });
 
   const [{ decorateMenu, decorateLinkGroup }] = await Promise.all([
-    loadBlock(`${miloLibs || codeRoot}/blocks/global-navigation/utilities/menu/menu.js`),
+    loadBlock(`./menu/menu.js`),
     loadStyles('utilities/menu/menu.css'),
   ]);
 
