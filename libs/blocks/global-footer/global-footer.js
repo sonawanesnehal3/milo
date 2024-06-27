@@ -376,6 +376,8 @@ export default function init(block, consumerConfig) {
         ...customConfig, 
         ...consumerConfig,
         miloLibs: consumerConfig.miloLibs || 'https://main--milo--adobecom.hlx.page/libs',
+        nonMiloRoot: consumerConfig.nonMiloRoot || 'https://main--milo--adobecom.hlx.page',
+        nonMiloConsumer: true,
       };
       console.log(combinedConfig);
       setConfig(combinedConfig);
