@@ -12,7 +12,6 @@ export default defineConfig({
     },
     outDir: path.resolve(__dirname, 'dist/global-footer'),
     rollupOptions: {
-      // Make sure to externalize deps that shouldn't be bundled
       external: [],
       output: {
         globals: {},
