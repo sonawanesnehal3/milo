@@ -372,7 +372,11 @@ export default function init(block, consumerConfig) {
   try {
     if(consumerConfig){
       console.log(block);
-      combinedConfig = {...customConfig, ...consumerConfig};
+      combinedConfig = {
+        ...customConfig, 
+        ...consumerConfig,
+        miloLibs: consumerConfig.miloLibs || 'https://main--milo--adobecom.hlx.page/libs',
+      };
       console.log(combinedConfig);
       setConfig(combinedConfig);
       block.classList.add('global-footer');
