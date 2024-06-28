@@ -10,7 +10,7 @@ export default defineConfig({
        name: 'GlobalFooter',
        fileName: (format) => `global-footer.${format === 'es' ? 'js' : 'umd.js'}`,
     },
-    outDir: path.resolve(__dirname, 'dist/global-footer'),
+    outDir: path.resolve(__dirname, 'libs/deps/global-footer'),
     rollupOptions: {
       external: [],
       output: {
