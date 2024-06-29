@@ -1,9 +1,12 @@
 /* eslint-disable no-async-promise-executor */
+import { config as customConfig } from '../../scripts/constants.js';
+
 import {
   decorateAutoBlock,
   decorateLinks,
   getMetadata,
   getConfig,
+  setConfig,
   loadBlock,
 } from '../../utils/utils.js';
 
@@ -362,8 +365,23 @@ class Footer {
   };
 }
 
-export default function init(block) {
+let combinedConfig;
+
+export default function init(block, consumerConfig) {
   try {
+    if(consumerConfig){
+      console.log(block);
+      combinedConfig = {
+        ...customConfig, 
+        ...consumerConfig,
+        miloLibs: consumerConfig.miloLibs || 'https://main--milo--adobecom.hlx.page/libs',
+        nonMiloRoot: consumerConfig.nonMiloRoot || 'https://main--milo--adobecom.hlx.page',
+        nonMiloConsumer: true,
+      };
+      console.log(combinedConfig);
+      setConfig(combinedConfig);
+      block.classList.add('global-footer');
+    }
     const footer = new Footer({ block });
     return footer;
   } catch (e) {
