@@ -37,7 +37,7 @@ export default function init(block) {
   if (divs.length < 2) return;
   const links = divs[1].querySelectorAll('a');
   if (!links.length) return;
-  const { prefix } = config.locale;
+  const { prefix } = config.locale ? config.locale : '';
   const path = window.location.href.replace(`${window.location.origin}${prefix}`, '').replace('#langnav', '');
   links.forEach((l) => decorateLink(l, config, path));
 }

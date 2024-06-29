@@ -38,7 +38,8 @@ async function getPlaceholder(key, config, sheet) {
   const defaultLocale = 'en-US';
 
   const getDefaultContentRoot = () => {
-    const defaultContentRoot = config.locale.contentRoot;
+    const { nonMiloConsumer, nonMiloRoot } = getConfig();
+    const defaultContentRoot = nonMiloConsumer ? nonMiloRoot : config.locale.contentRoot;
     const localePrefix = config.locale.prefix;
 
     if (!localePrefix.length) return defaultContentRoot;
