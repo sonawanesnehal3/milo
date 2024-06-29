@@ -1516,7 +1516,8 @@ const attributes = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
 const fetchedPlaceholders = {};
 
 const getPlaceholdersPath = (config, sheet) => {
-  const path = `${config.locale.contentRoot}/placeholders.json`;
+  const { nonMiloConsumer, nonMiloRoot } = getConfig$1();
+  const path = `${ nonMiloConsumer ? nonMiloRoot : config.locale.contentRoot }/placeholders.json`;
   const query = sheet !== 'default' && typeof sheet === 'string' && sheet.length ? `?sheet=${sheet}` : '';
   return `${path}${query}`;
 };
