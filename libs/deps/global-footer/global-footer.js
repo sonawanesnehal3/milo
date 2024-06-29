@@ -1818,6 +1818,7 @@ function loadBlock$1(path) {
 
 let cachedDecorateMenu;
 async function loadDecorateMenu() {
+  const { miloLibs, codeRoot } = getConfig$1();
   if (cachedDecorateMenu) return cachedDecorateMenu;
 
   let resolve;
@@ -1826,7 +1827,7 @@ async function loadDecorateMenu() {
   });
 
   const [{ decorateMenu, decorateLinkGroup }] = await Promise.all([
-    loadBlock$1('./menu/menu.js'),
+    loadBlock$1(`${miloLibs || codeRoot}/blocks/global-navigation/utilities/menu/menu.js`),
     loadStyles(rootPath('utilities/menu/menu.css')),
   ]);
 
