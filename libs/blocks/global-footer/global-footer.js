@@ -71,7 +71,8 @@ class Footer {
 
   decorateContent = () => logErrorFor(async () => {
     // Fetch footer content
-    const url = getMetadata('footer-source') || `${locale.contentRoot}/footer`;
+    let nonMiloFooterUrl = combinedConfig && combinedConfig.nonMiloFooterUrl || '';
+    const url = nonMiloFooterUrl || getMetadata('footer-source') || `${locale.contentRoot}/footer`;
     this.body = await fetchAndProcessPlainHtml({
       url,
       shouldDecorateLinks: false,
