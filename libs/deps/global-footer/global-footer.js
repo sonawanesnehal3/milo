@@ -2052,7 +2052,7 @@ class Footer {
   };
 
   loadIcons = async () => {
-    const file = await fetch(`${base}/blocks/global-footer/icons.svg`);
+    const file = await fetch(`${base !== undefined ? base : getConfig$1().miloLibs}/blocks/global-footer/icons.svg`);
     if (!file.ok) {
       lanaLog({
         message: 'Issue with loadIcons',
