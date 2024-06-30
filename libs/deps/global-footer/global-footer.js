@@ -2268,21 +2268,21 @@ class Footer {
   };
 }
 
-let combinedConfig;
+let gnavConfig;
 
 function init$7(block, consumerConfig) {
   try {
     if(consumerConfig){
       console.log(block);
-      combinedConfig = {
+      gnavConfig = {
         ...config$1, 
         ...consumerConfig,
         miloLibs: consumerConfig.miloLibs || 'https://main--milo--adobecom.hlx.page/libs',
         nonMiloRoot: consumerConfig.nonMiloRoot || 'https://main--milo--adobecom.hlx.page',
         nonMiloConsumer: true,
       };
-      console.log(combinedConfig);
-      setConfig$1(combinedConfig);
+      console.log(gnavConfig);
+      setConfig$1(gnavConfig);
       block.classList.add('global-footer');
     }
     const footer = new Footer({ block });
