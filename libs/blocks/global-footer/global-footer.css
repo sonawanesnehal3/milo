@@ -131,7 +131,7 @@
 }
 
 /* Region picker */
-.feds-regionPicker {
+.global-footer .feds-regionPicker {
   column-gap: 10px;
   color: var(--feds-color-link--light);
   border-color: var(--feds-color-link--light);
