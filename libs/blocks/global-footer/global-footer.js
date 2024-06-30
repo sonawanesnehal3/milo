@@ -71,7 +71,7 @@ class Footer {
 
   decorateContent = () => logErrorFor(async () => {
     // Fetch footer content
-    let nonMiloFooterUrl = combinedConfig && combinedConfig.nonMiloFooterUrl || '';
+    let nonMiloFooterUrl = gnavConfig && gnavConfig.nonMiloFooterUrl || '';
     const url = nonMiloFooterUrl || getMetadata('footer-source') || `${locale.contentRoot}/footer`;
     this.body = await fetchAndProcessPlainHtml({
       url,
