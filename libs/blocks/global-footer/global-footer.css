@@ -1,10 +1,44 @@
 /* Base */
 .global-footer {
+  --type-body-m-lh: 27px;
+  --body-font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  --text-color: #2c2c2c;
+
+  font-family: var(--body-font-family);
+  line-height: var(--type-body-m-lh);
+  color: var(--text-color);
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+
   padding: 20px 0;
   display: flex;
   justify-content: center;
   font-size: 12px;
   background: var(--feds-background-footer--light);
+}
+
+.global-footer .feds-navLink {
+  color: #2c2c2c;
+}
+
+.feds-navLink {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: none;
+  font: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.global-footer a {
+  color: #035fe6;
+  text-decoration: none;
+}
+
+.global-footer img {
+  max-width: 100%;
+  height: auto;
 }
 
 .global-footer ul {
