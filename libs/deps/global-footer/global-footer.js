@@ -2284,6 +2284,7 @@ function init$7(block, consumerConfig) {
       console.log(gnavConfig);
       setConfig$1(gnavConfig);
       block.classList.add('global-footer');
+      window.gnavConfig = gnavConfig;
     }
     const footer = new Footer({ block });
     return footer;

@@ -382,6 +382,7 @@ export default function init(block, consumerConfig) {
       console.log(gnavConfig);
       setConfig(gnavConfig);
       block.classList.add('global-footer');
+      window.gnavConfig = gnavConfig;
     }
     const footer = new Footer({ block });
     return footer;
