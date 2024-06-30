@@ -3,7 +3,8 @@ import { getConfig } from '../utils/utils.js';
 
 const getPlaceholdersPath = (config, sheet) => {
   const { nonMiloConsumer, nonMiloRoot } = getConfig();
-  const path = `${ nonMiloConsumer ? nonMiloRoot : config.locale.contentRoot }/placeholders.json`;
+  //const path = `${ nonMiloConsumer ? nonMiloRoot : config.locale.contentRoot }/placeholders.json`;
+  const path = `${ nonMiloConsumer ? nonMiloRoot : (config.locale && config.locale.contentRoot) ? config.locale.contentRoot : '' }/placeholders.json`;
   const query = sheet !== 'default' && typeof sheet === 'string' && sheet.length ? `?sheet=${sheet}` : '';
   return `${path}${query}`;
 };
@@ -38,6 +39,10 @@ async function getPlaceholder(key, config, sheet) {
   const defaultLocale = 'en-US';
 
   const getDefaultContentRoot = () => {
+    if (!config || !config.locale) {
+      throw new Error('Configuration object is missing or invalid.');
+    }
+    
     const defaultContentRoot = config.locale.contentRoot;
     const localePrefix = config.locale.prefix;
 
