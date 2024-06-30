@@ -264,7 +264,7 @@
   margin: 0;
 }
 
-.feds-footer-privacyLink {
+.global-footer .feds-footer-privacyLink {
   display: flex;
   column-gap: 5px;
   align-items: center;
