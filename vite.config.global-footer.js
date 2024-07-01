@@ -7,8 +7,9 @@ export default defineConfig({
     minify: false,
     lib: {
       entry: path.resolve(__dirname, 'libs/blocks/global-footer/footerbuild.js'),
-       name: 'GlobalFooter',
-       fileName: (format) => `global-footer.${format === 'es' ? 'js' : 'umd.js'}`,
+      name: 'GlobalFooter',
+      formats: ['es'], 
+      fileName: (format) => `global-footer.js`,
     },
     outDir: path.resolve(__dirname, 'libs/deps/global-footer'),
     rollupOptions: {
