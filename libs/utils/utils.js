@@ -244,7 +244,7 @@ export const [setConfig, updateConfig, getConfig] = (() => {
       return config;
     },
     (conf) => (config = conf),
-    () => config || window.config,
+    () => config.locale ? config : window.config,
   ];
 })();
 
