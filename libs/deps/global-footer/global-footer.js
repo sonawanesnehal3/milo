@@ -374,7 +374,7 @@ const [setConfig$1, updateConfig, getConfig$1] = (() => {
       return config;
     },
     (conf) => (config = conf),
-    () => config.locale ? config : window.config,
+    () => config.locale ? config : window.gnavConfig,
   ];
 })();
 
@@ -2270,8 +2270,9 @@ class Footer {
 
 let combinedConfig;
 
-function init$7(block, consumerConfig) {
+function init$7(block) {
   try {
+    const consumerConfig = window.fedsGnavConfig;
     if(consumerConfig){
       console.log(block);
       combinedConfig = {
@@ -2282,9 +2283,10 @@ function init$7(block, consumerConfig) {
         nonMiloConsumer: true,
       };
       console.log(combinedConfig);
+      window.gnavConfig = combinedConfig;
       setConfig$1(combinedConfig);
       block.classList.add('global-footer');
-      window.gnavConfig = combinedConfig;
+      
     }
     const footer = new Footer({ block });
     return footer;

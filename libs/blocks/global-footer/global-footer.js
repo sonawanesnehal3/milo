@@ -368,8 +368,9 @@ class Footer {
 
 let combinedConfig;
 
-export default function init(block, consumerConfig) {
+export default function init(block) {
   try {
+    const consumerConfig = window.fedsGnavConfig;
     if(consumerConfig){
       console.log(block);
       combinedConfig = {
@@ -380,9 +381,10 @@ export default function init(block, consumerConfig) {
         nonMiloConsumer: true,
       };
       console.log(combinedConfig);
+      window.gnavConfig = combinedConfig;
       setConfig(combinedConfig);
       block.classList.add('global-footer');
-      window.gnavConfig = combinedConfig;
+      
     }
     const footer = new Footer({ block });
     return footer;
