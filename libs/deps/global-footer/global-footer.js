@@ -374,7 +374,7 @@ const [setConfig$1, updateConfig, getConfig$1] = (() => {
       return config;
     },
     (conf) => (config = conf),
-    () => config,
+    () => config.locale ? config : window.config,
   ];
 })();
 
