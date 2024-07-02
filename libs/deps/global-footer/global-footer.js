@@ -374,17 +374,7 @@ const [setConfig$1, updateConfig, getConfig$1] = (() => {
       return config;
     },
     (conf) => (config = conf),
-    () => {
-
-      if(config.locale) {
-      
-      return config
-      
-      } 
-      
-      return window.config;
-      
-      },
+    () => config.locale ? config : window.gnavConfig,
   ];
 })();
 

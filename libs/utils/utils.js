@@ -244,17 +244,7 @@ export const [setConfig, updateConfig, getConfig] = (() => {
       return config;
     },
     (conf) => (config = conf),
-    () => {
-
-      if(config.locale) {
-      
-      return config
-      
-      } 
-      
-      return window.config;
-      
-      },
+    () => config.locale ? config : window.gnavConfig,
   ];
 })();
 
