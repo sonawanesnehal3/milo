@@ -1,4 +1,4 @@
-export default async function bootstrapBlock(miloConfigs, blockConfig) {
+export default async function bootstrapper(miloConfigs, blockConfig) {
   const { miloLibs } = miloConfigs;
   const { name, targetEl } = blockConfig;
   const { getConfig, setConfig, createTag, loadLink, loadScript } = await import(`${miloLibs}/utils/utils.js`);
