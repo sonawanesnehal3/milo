@@ -13,26 +13,22 @@ const envMap = {
 };
 
 export default async function loadBlock(configs = {}) {
-  const { footer } = configs;
+  const { footer, locale, env = 'prod'  } = configs;
   const branch = new URLSearchParams(window.location.search).get('navbranch');
-  if(footer) {
-    const { footer: {locale, authoringPath, env = 'prod', privacyId, privacyLoadDelay = 3000 } = {} } = configs;
-    const miloLibs = branch ? `https://${branch}--milo--adobecom.hlx.page` : envMap[env];
+  const miloLibs = branch ? `https://${branch}--milo--adobecom.hlx.page` : envMap[env];
 
-    // Relative path can't be used, as the script will run on consumer's app
-    const { default: bootstrapper } = await import(`${miloLibs}/libs/navigation/bootstrapper.js`);
-    const { default: locales } = await import(`${miloLibs}/libs/utils/locales.js`);
-    const clientConfig = {
-      footer: {
-        privacyId,
-        contentRoot: authoringPath,
-        origin: miloLibs,
-        miloLibs: `${miloLibs}/libs`,
-        pathname: `/${locale || ''}`,
-        locales: configs.locales || locales,
-      },
-    };
+  // Relative path can't be used, as the script will run on consumer's app
+  const { default: bootstrapper } = await import(`${miloLibs}/libs/navigation/bootstrapper.js`);
+  const { default: locales } = await import(`${miloLibs}/libs/utils/locales.js`);
+  const clientConfig = {
+    origin: miloLibs,
+    miloLibs: `${miloLibs}/libs`,
+    pathname: `/${locale || ''}`,
+    locales: configs.locales || locales,
+  };
+  if (footer) {
+    const { footer: { authoringPath, privacyId, privacyLoadDelay = 3000 } } = configs;
     blockConfig.delay = privacyLoadDelay;
-    bootstrapper(clientConfig.footer, blockConfig.footer);
+    bootstrapper({ ...clientConfig, contentRoot: authoringPath, privacyId }, blockConfig.footer);
   }
 }
