@@ -12,6 +12,12 @@ export default async function bootstrapBlock(miloConfigs, blockConfig) {
     const block = createTag(targetEl, { class: name });
     document.body[blockConfig.appendType](block);
   }
+  // Configure Unav if unav components are in configs
+  if (blockConfig.targetEl === 'header' && blockConfig.universalNavComponents) {
+    const unavMeta = createTag('meta', { name: 'universal-nav', content: blockConfig.universalNavComponents });
+    document.head.append(unavMeta);
+  }
+
   initBlock(document.querySelector(targetEl));
   if (blockConfig.targetEl === 'footer') {
     const { loadPrivacy } = await import(`${miloLibs}/scripts/delayed.js`);

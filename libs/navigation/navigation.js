@@ -18,7 +18,7 @@ const envMap = {
 };
 
 export default async function loadBlock(configs, customLib) {
-  const { header, footer, locale, env = 'prod' } = configs || {};
+  const { header, footer, locale, env = 'prod', authoringPath } = configs || {};
   const branch = new URLSearchParams(window.location.search).get('navbranch');
   const miloLibs = branch
     ? `https://${branch}--milo--adobecom.hlx.page`
@@ -48,17 +48,23 @@ export default async function loadBlock(configs, customLib) {
       privacyId: configs.privacyId,
       privacyLoadDelay: configs.privacyLoadDelay,
     },
-    header: { imsClientId: configs.imsClientId },
+    header: {
+      imsClientId: configs.imsClientId,
+    },
   };
 
   [header, footer].forEach((block, idx) => {
     if (block) {
       const key = idx === 0 ? 'header' : 'footer';
+      if (key === 'header') {
+        blockConfig.header.universalNavComponents = header.universalNavComponents;
+      }
+      
       bootstrapBlock(
         {
           ...clientConfig,
           ...miloConfigs[key],
-          contentRoot: block.authoringPath,
+          contentRoot: authoringPath,
         },
         blockConfig[key],
       );
