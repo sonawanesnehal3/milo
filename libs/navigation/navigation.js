@@ -45,11 +45,11 @@ export default async function loadBlock(configs, customLib) {
 
   const miloConfigs = {
     footer: {
-      privacyId: configs.privacyId,
-      privacyLoadDelay: configs.privacyLoadDelay,
+      privacyId: footer.privacyId,
+      privacyLoadDelay: footer.privacyLoadDelay,
     },
     header: {
-      imsClientId: configs.imsClientId,
+      imsClientId: header.imsClientId,
     },
   };
 
