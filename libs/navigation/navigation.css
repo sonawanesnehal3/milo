@@ -1,5 +1,5 @@
  /* Extracting the essential styles required for rendering the component independently */
- .global-navigation .global-footer, .dialog-modal {
+ .global-navigation, .global-footer, .dialog-modal {
    font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
    line-height: 27px;
    color: #2c2c2c;

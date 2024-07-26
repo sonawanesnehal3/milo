@@ -2,7 +2,7 @@ const authoringPath = new URLSearchParams(window.location.search).get('authoring
 const env = new URLSearchParams(window.location.search).get('env') || 'qa';
 const privacyId = new URLSearchParams(window.location.search).get('privacyid');
 const locale = new URLSearchParams(window.location.search).get('locale');
-const navBranch = new URLSearchParams(window.location.search).get('navbranch');
+const navBranch = new URLSearchParams(window.location.search).get('navbranch') || 'gnav';
 const universalNavComponents = new URLSearchParams(window.location.search).get('universalnav');
 
 async function init() {
