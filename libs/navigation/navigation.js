@@ -1,15 +1,18 @@
-const blockConfig = {
-  header: {
+const blockConfig = [ 
+  {
+    key: 'header',
     name: 'global-navigation',
     targetEl: 'header',
     appendType: 'prepend',
+    params: ['imsClientId'],
   },
-  footer: {
+  {
+    key: 'footer',
     name: 'global-footer',
     targetEl: 'footer',
     appendType: 'appendChild',
-  },
-};
+    params: ['privacyId', 'privacyLoadDelay'],
+  }]
 
 const envMap = {
   prod: 'https://www.adobe.com',
@@ -17,57 +20,54 @@ const envMap = {
   qa: 'https://gnav--milo--adobecom.hlx.page',
 };
 
+function getParamsConfigs(configs) {
+  return blockConfig.reduce((acc, block) => {
+    block.params.forEach(param => {
+      const value = configs[block.key]?.[param];
+      if (value !== undefined) {
+        acc[param] = value;
+      }
+    });
+    return acc;
+  }, {});
+}
+
 export default async function loadBlock(configs, customLib) {
-  const { header, footer, locale, env = 'prod', authoringPath } = configs || {};
+  const { header, footer, authoringPath, env = 'prod', locale = '' } = configs || {};
   const branch = new URLSearchParams(window.location.search).get('navbranch');
-  const miloLibs = branch
-    ? `https://${branch}--milo--adobecom.hlx.page`
-    : customLib || envMap[env];
+  const miloLibs = branch ? `https://${branch}--milo--adobecom.hlx.page` : customLib || envMap[env];
 
   if (!header && !footer) {
     console.error('No block configs found!');
     return;
   }
   // Relative path can't be used, as the script will run on consumer's app
-  const [[{ default: bootstrapBlock }, { default: locales }]] = await Promise.all([
+  const [[{ default: bootstrapBlock }, { default: locales }, { setConfig }]] = await Promise.all([
     Promise.all([
       import(`${miloLibs}/libs/navigation/bootstrapper.js`),
       import(`${miloLibs}/libs/utils/locales.js`),
+      import(`${miloLibs}/libs/utils/utils.js`),
     ]),
   ]);
 
+  const paramConfigs = getParamsConfigs(configs, miloLibs);
   const clientConfig = {
     origin: miloLibs,
     miloLibs: `${miloLibs}/libs`,
-    pathname: `/${locale || ''}`,
+    pathname: `/${locale}`,
     locales: configs.locales || locales,
+    contentRoot: authoringPath,
+    ...paramConfigs,
   };
+  setConfig(clientConfig);
 
-  const miloConfigs = {
-    footer: {
-      privacyId: footer.privacyId,
-      privacyLoadDelay: footer.privacyLoadDelay,
-    },
-    header: {
-      imsClientId: header.imsClientId,
-    },
-  };
-
-  [header, footer].forEach((block, idx) => {
-    if (block) {
-      const key = idx === 0 ? 'header' : 'footer';
-      if (key === 'header') {
-        blockConfig.header.universalNavComponents = header.universalNavComponents;
-      }
-      
-      bootstrapBlock(
-        {
-          ...clientConfig,
-          ...miloConfigs[key],
-          contentRoot: authoringPath,
-        },
-        blockConfig[key],
-      );
+  blockConfig.forEach((block) => {
+    const configBlock = configs[block.key];
+    if (configBlock) {
+      bootstrapBlock(`${miloLibs}/libs`, {
+        ...block,
+        ...(block.key === 'header' && { universalNavComponents: configBlock.universalNavComponents }),
+      });
     }
   });
 }
