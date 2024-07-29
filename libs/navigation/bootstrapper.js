@@ -11,8 +11,8 @@ export default async function bootstrapBlock(miloLibs, blockConfig) {
     document.body[blockConfig.appendType](block);
   }
   // Configure Unav if unav components are in configs
-  if (blockConfig.targetEl === 'header' && blockConfig.universalNavComponents) {
-    const unavMeta = createTag('meta', { name: 'universal-nav', content: blockConfig.universalNavComponents });
+  if (blockConfig.targetEl === 'header' && blockConfig.unavComponents) {
+    const unavMeta = createTag('meta', { name: 'universal-nav', content: blockConfig.unavComponents });
     document.head.append(unavMeta);
   }
 
