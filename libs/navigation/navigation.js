@@ -50,6 +50,15 @@ export default async function loadBlock(configs, customLib) {
     ]),
   ]);
 
+  if (header.breadcrumbs == 'on') {
+    const breadcrumbsBase = `${miloLibs}${header.authoringPath}/breadcrubs`;
+    const metaTag = document.createElement('meta');
+    metaTag.name = 'breadcrumbs-base';
+    metaTag.content = breadcrumbsBase;
+    document.head.appendChild(metaTag);
+    document.querySelector('header').classList.add('has-breadcrumbs');
+  }
+  
   const paramConfigs = getParamsConfigs(configs, miloLibs);
   const clientConfig = {
     origin: miloLibs,
