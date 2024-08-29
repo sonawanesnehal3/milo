@@ -34,6 +34,7 @@ import {
   trigger,
   yieldToMain,
   addMepHighlightAndTargetId,
+  customSearch,
 } from './utilities/utilities.js';
 
 import { replaceKey, replaceKeyArray } from '../../features/placeholders.js';
@@ -817,7 +818,7 @@ class Gnav {
         ${isDesktop.matches ? '' : this.decorateSearch()}
         ${this.elements.mainNav}
         ${isDesktop.matches ? this.decorateSearch() : ''}
-        ${getConfig().searchEnabled === 'on' ? this.decorateCustomSearch() : ''}
+        ${customSearch() ? this.decorateCustomSearch() : ''}
       </div>
     `;
 
