@@ -803,6 +803,11 @@ class Gnav {
     analyticsValue: 'Logo',
   });
 
+  decorateCustomSearch = () => {
+    this.elements.customSearch = toFragment`<div class="feds-search"></div>`;
+    return this.elements.customSearch;
+  };
+
   decorateMainNav = async () => {
     const breadcrumbs = isDesktop.matches ? '' : await this.decorateBreadcrumbs();
     this.elements.mainNav = toFragment`<div class="feds-nav"></div>`;
@@ -812,6 +817,7 @@ class Gnav {
         ${isDesktop.matches ? '' : this.decorateSearch()}
         ${this.elements.mainNav}
         ${isDesktop.matches ? this.decorateSearch() : ''}
+        ${getConfig().searchEnabled === 'on' ? this.decorateCustomSearch() : ''}
       </div>
     `;
 

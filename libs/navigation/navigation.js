@@ -4,7 +4,7 @@ const blockConfig = [
     name: 'global-navigation',
     targetEl: 'header',
     appendType: 'prepend',
-    params: ['imsClientId'],
+    params: ['imsClientId', 'searchEnabled'],
   },
   {
     key: 'footer',
@@ -64,7 +64,7 @@ export default async function loadBlock(configs, customLib) {
     if (configBlock) {
       bootstrapBlock(`${miloLibs}/libs`, {
         ...block,
-        ...(block.key === 'header' && { unavComponents: configBlock.unavComponents, redirect: configBlock.redirect }),
+        ...(block.key === 'header' && { unavComponents: configBlock.unavComponents, redirect: configBlock.redirect, searchEnabled: configBlock.searchEnabled }),
       });
     }
   });
