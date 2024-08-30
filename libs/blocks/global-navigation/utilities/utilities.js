@@ -47,11 +47,6 @@ export const logErrorFor = async (fn, message, tags) => {
   }
 };
 
-export function customSearch() {
-  const { searchEnabled } = getConfig();
-  return searchEnabled === 'on';
-}
-
 export function addMepHighlightAndTargetId(el, source) {
   let { manifestId, targetManifestId } = source.dataset;
   manifestId ??= source?.closest('[data-manifest-id]')?.dataset?.manifestId;
