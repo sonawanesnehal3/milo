@@ -1,0 +1,41 @@
+.georouting-toaster {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.georouting-toaster p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.georouting-toaster .switch-btn, 
+.georouting-toaster .dismiss-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.georouting-toaster .dismiss-btn {
+  background-color: #6c757d;
+}
+
+.georouting-toaster .switch-btn:hover,
+.georouting-toaster .dismiss-btn:hover {
+  background-color: #0056b3;
+}
