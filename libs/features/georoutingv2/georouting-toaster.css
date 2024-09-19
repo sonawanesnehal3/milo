@@ -1,41 +1,108 @@
+/* georouting-toaster.css */
 .georouting-toaster {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 15px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  position: absolute;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.georouting-toaster p {
-  margin: 0;
-  font-size: 16px;
-}
-
-.georouting-toaster .switch-btn, 
-.georouting-toaster .dismiss-btn {
-  background-color: #007bff;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 10px;
+  border: 1px solid black;
   border-radius: 5px;
+  bottom: 20px;
+  left: 50px;
+  top: 70px;
+  background-color: #fff;
+  width: 500px;
+  height: 150px;
+  z-index: 100;
+  font-size: 14px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 
-.georouting-toaster .dismiss-btn {
-  background-color: #6c757d;
+.georouting-toaster-content {
+  padding-left: 5px;
+  width: 100%;
 }
 
-.georouting-toaster .switch-btn:hover,
-.georouting-toaster .dismiss-btn:hover {
-  background-color: #0056b3;
+.georouting-toaster-content h5 {
+  margin: 5px 0;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.georouting-toaster-content p {
+  margin: 5px 0;
+  line-height: 20px;;
+  padding-left: 15px;
+}
+
+.nav-arrow {
+  border-style: solid;
+  border-width: 9px;
+  border-color: transparent;
+  border-top-width: 0;
+  border-bottom: 9px solid black;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: -9px;
+  left: 20px;
+}
+
+.nav-arrow-inner {
+  border-style: solid;
+  _border-style: dashed;
+  border-width: 9px;
+  border-color: transparent;
+  border-top-width: 0;
+  border-bottom: 9px solid #fff;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 1px;
+  left: -9px;
+}
+
+.georouting-toaster-footer {
+    /* text-align: right; */
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    width: 100%; /* Take full width */
+}
+
+.dismiss-btn {
+  background-color: rgb(255, 255, 255); /* Light blue for the default background */
+  border-color: rgb(75, 75, 75);     /* Light blue border */
+  color: rgb(75, 75, 75);               /* Gray text color */
+  display: inline-flex;
+  
+  min-height: 21px;
+  min-width: 72px;                      /* Slightly larger button size */
+  padding: 0 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 20px;                   /* More subtle rounded corners */
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 20px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8px;                    /* Space between buttons */
+  transition: color 130ms ease-out, border-color 130ms ease-out, background-color 130ms ease-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Soft shadow for slight depth */
+  padding: 7px 18px 8px;
+}
+
+.con-button {
+  margin-inline-end: 24px;
+}
+
+
+/* global-navigation.css */
+.feds-brand-container {
+  position:relative
 }
