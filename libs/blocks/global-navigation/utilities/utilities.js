@@ -4,6 +4,7 @@ import {
 import { getFederatedContentRoot, getFederatedUrl } from '../../../utils/federated.js';
 import { processTrackingLabels } from '../../../martech/attributes.js';
 import { replaceText } from '../../../features/placeholders.js';
+import { getUrlParams } from '../../quiz/utils.js';
 
 loadLana();
 
@@ -204,12 +205,37 @@ export async function loadDecorateMenu() {
   return cachedDecorateMenu;
 }
 
+function appendPromoidToLink(clone, promoid) {
+  try {
+    let href = clone.getAttribute('href');
+    if (href && !href.startsWith('http://') && !href.startsWith('https://')) {
+      href = `${window.location.origin}${href}`;
+    }
+    const url = new URL(href);
+    const urlSearchParams = new URLSearchParams(url.search);
+
+    if (!urlSearchParams.has('promoid')) {
+      urlSearchParams.append('promoid', promoid);
+    }
+
+    const searchParamsString = urlSearchParams.toString();
+    clone.setAttribute('href', `${url.origin}${url.pathname}?${searchParamsString}${url.hash}`);
+  } catch (error) {
+    console.log(`appendPromoidToLink: Could not append promoid for ${clone}, invalid URL`);
+  }
+}
+
 export function decorateCta({ elem, type = 'primaryCta', index } = {}) {
   const modifier = type === 'secondaryCta' ? 'secondary' : 'primary';
 
   const clone = elem.cloneNode(true);
   clone.className = `feds-cta feds-cta--${modifier}`;
   clone.setAttribute('daa-ll', getAnalyticsValue(clone.textContent, index));
+
+  const paramsValue = getUrlParams();
+  if (paramsValue.promoid) {
+    appendPromoidToLink(clone, paramsValue.promoid);
+  }
 
   return toFragment`
     <div class="feds-cta-wrapper">
