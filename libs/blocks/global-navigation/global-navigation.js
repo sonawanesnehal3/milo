@@ -5,6 +5,7 @@ import {
   loadIms,
   decorateLinks,
   loadScript,
+  createTag,
 } from '../../utils/utils.js';
 import {
   closeAllDropdowns,
@@ -1061,6 +1062,11 @@ const getSource = async () => {
   return url;
 };
 
+async function loadPulse() {
+  const { default: loadPulseToaster } = await import('../../features/adobepulse/adobepulse.js');
+  await loadPulseToaster(getConfig(), createTag, loadStyles);
+}
+
 export default async function init(block) {
   const { mep } = getConfig();
   const sourceUrl = await getSource();
@@ -1081,6 +1087,7 @@ export default async function init(block) {
     block,
   });
   await gnav.init();
+  await loadPulse();
   block.setAttribute('daa-im', 'true');
   const mepMartech = mep?.martech || '';
   block.setAttribute('daa-lh', `gnav|${getExperienceName()}${mepMartech}`);
