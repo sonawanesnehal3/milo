@@ -715,3 +715,10 @@ header.global-navigation {
     align-items: center;
   }
 }
+
+.media-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+

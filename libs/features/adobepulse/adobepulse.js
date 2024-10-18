@@ -2,7 +2,7 @@ let config;
 let createTag;
 let loadStyle;
 
-const LOCATION_ICON = `
+const MEDIA_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <g transform="translate(-10500 3403)">
     <circle cx="10" cy="10" r="10" transform="translate(10500 -3403)" fill="#707070"/>
@@ -32,21 +32,22 @@ function createToaster() {
 
   toaster.appendChild(toasterContent);
   document.body.appendChild(toaster);
+  console.log('Toaster appended to the document');
 }
 
-// Function to add location icon and attach click event
-async function appendLocationIcon() {
+// Function to add media icon and attach click event
+async function appendMediaIcon() {
   const observer = new MutationObserver(() => {
     const navWrapper = document.querySelector('.feds-nav-wrapper');
     if (navWrapper) {
-      // Create location icon container
-      const locationIcon = document.createElement('div');
-      locationIcon.classList.add('location-icon-container');
-      locationIcon.innerHTML = LOCATION_ICON;
-      navWrapper.appendChild(locationIcon);
+      const mediaIcon = document.createElement('div');
+      mediaIcon.classList.add('media-icon-container');
+      mediaIcon.innerHTML = MEDIA_ICON;
+      navWrapper.appendChild(mediaIcon);
 
       // Attach click event to open the toaster
-      locationIcon.addEventListener('click', () => {
+      mediaIcon.addEventListener('click', () => {
+        console.log('Media icon clicked');
         createToaster();
       });
 
@@ -66,12 +67,6 @@ export default async function loadPulseToaster(conf, createTagFunc, loadStyleFun
   createTag = createTagFunc;
   loadStyle = loadStyleFunc;
 
-  // Add location icon to the global navigation
-  await appendLocationIcon();
-
-  // Optionally, load the CSS for the toaster
-  const { miloLibs, codeRoot } = config;
-  await new Promise((resolve) => {
-    loadStyle(`${miloLibs || codeRoot}/features/pulse/pulse.css`, resolve);
-  });
+  // Add media icon to the global navigation
+  await appendMediaIcon();
 }
