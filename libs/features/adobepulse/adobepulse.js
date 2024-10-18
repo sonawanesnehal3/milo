@@ -10,29 +10,71 @@ const MEDIA_ICON = `
   </g>
 </svg>`;
 
+const CLOSE_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g transform="translate(-10500 3403)">
+    <circle cx="10" cy="10" r="10" transform="translate(10500 -3403)" fill="#707070"/>
+    <line y1="8" x2="8" transform="translate(10506 -3397)" fill="none" stroke="#fff" stroke-width="2"/>
+    <line x1="8" y1="8" transform="translate(10506 -3397)" fill="none" stroke="#fff" stroke-width="2"/>
+  </g>
+</svg>`;
+
 function closeToaster(toaster) {
   const closeEvent = new Event('toaster:closed');
   window.dispatchEvent(closeEvent);
   toaster.remove();
 }
 
-// Create a simple toaster element (currently empty)
+// Create a simple toaster element (with nav-arrow)
 function createToaster() {
-  const toaster = createTag('div', { class: 'pulse-toaster' });
+  const existingToaster = document.querySelector('.pulse-toaster');
+  if (existingToaster) {
+    existingToaster.remove(); // Remove existing toaster if one is open
+  }
 
+  const toaster = createTag('div', { class: 'pulse-toaster' });
   const toasterContent = createTag('div', { class: 'pulse-toaster-content' });
-  const closeButton = createTag('button', { class: 'dialog-close', 'aria-label': 'Close' }, '×');
+
+  // Create nav-arrow
+  const navArrow = createTag('div', { class: 'nav-arrow' });
+  const navArrowInner = createTag('div', { class: 'nav-arrow-inner' });
+
+  const closeButton = createTag('button', { class: 'dialog-close', 'aria-label': 'Close' }, CLOSE_ICON);
   closeButton.addEventListener('click', () => {
     closeToaster(toaster);
   });
 
+  navArrow.appendChild(navArrowInner);
   toasterContent.appendChild(closeButton);
+  toasterContent.appendChild(navArrow);
+  
+
   const text = createTag('p', {}, 'This is an empty toaster.');
   toasterContent.appendChild(text);
 
   toaster.appendChild(toasterContent);
-  document.body.appendChild(toaster);
-  console.log('Toaster appended to the document');
+
+  // Append toaster to the .feds-nav-wrapper (inside global navigation)
+  // const navWrapper = document.querySelector('.feds-nav-wrapper');
+  // navWrapper.appendChild(toaster);
+
+  // const mediaIcon = document.querySelector('.media-icon-container');
+  // const rect = mediaIcon.getBoundingClientRect();
+
+  // // Adjust position to align properly inside the navigation
+  // toaster.style.top = `${rect.bottom - navWrapper.getBoundingClientRect().top + 10}px`;
+  // toaster.style.left = `${rect.left - navWrapper.getBoundingClientRect().left}px`;
+  const observer = new MutationObserver(() => {
+    const mediaContainer = document.querySelector('.media-icon-container');
+    if (mediaContainer) {
+      mediaContainer.appendChild(toaster);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document, {
+    childList: true,
+    subtree: true,
+  });
 }
 
 // Function to add media icon and attach click event
@@ -48,7 +90,7 @@ async function appendMediaIcon() {
       // Attach click event to open the toaster
       mediaIcon.addEventListener('click', () => {
         console.log('Media icon clicked');
-        createToaster();
+        createToaster(); // Call createToaster here
       });
 
       observer.disconnect();
