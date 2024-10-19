@@ -16,26 +16,25 @@ function createTag(tag, attributes, innerHTML) {
   return element;
 }
 
-// Create the carousel logic
 export default function createCarousel() {
   const carouselWrapper = createTag('div', { class: 'carousel-wrapper' });
   const slides = [
     {
       title: 'Slide 1 Title',
-      desc: 'This is the description for slide 1',
-      img: 'https://via.placeholder.com/150', // Sample image
+      desc: 'Creative pros, your quick-and-easy toolkit just got an upgrade!',
+      img: 'https://via.placeholder.com/400x200', // Sample image with width 200px
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 2 Title',
       desc: 'This is the description for slide 2',
-      img: 'https://via.placeholder.com/150',
+      img: 'https://via.placeholder.com/400x200',
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 3 Title',
       desc: 'This is the description for slide 3',
-      img: 'https://via.placeholder.com/150',
+      img: 'https://via.placeholder.com/400x200',
       actionButton: 'Learn More',
     },
   ];
@@ -53,28 +52,31 @@ export default function createCarousel() {
     // Set each slide to take full width of the container
     slideElement.style.width = `${100 / slides.length}%`;
 
-    const title = createTag('h3', {}, slide.title);
-    const desc = createTag('p', {}, slide.desc);
+    // Append title, image, description, and button one below the other
+    const title = createTag('h3', { class: 'carousel-title' }, slide.title);
     const img = createTag('img', { src: slide.img, alt: slide.title });
+    
+    // Create a div for the description
+    const descWrapper = createTag('div', { class: 'carousel-desc' });
+    const desc = createTag('p', {}, slide.desc);
+    descWrapper.appendChild(desc); // Add the description to the wrapper
+    
     const button = createTag('button', { class: 'carousel-button' }, slide.actionButton);
 
-    slideElement.append(title, desc, img, button);
+    slideElement.append(title, img, descWrapper, button);
     slideContainer.appendChild(slideElement);
   });
 
-  // Append the slide container to the wrapper
   carouselWrapper.appendChild(slideContainer);
 
   let currentIndex = 0;
 
-  // Function to update the carousel position
   function updateCarouselPosition() {
     const slideWidth = 100; // Since each slide is now percentage-based
     slideContainer.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
     slideContainer.style.transition = 'transform 0.5s ease-in-out';
   }
 
-  // Add navigation buttons (previous, next)
   const previousBtn = createTag('button', { class: 'carousel-button previous' }, ARROW_PREVIOUS_IMG);
   const nextBtn = createTag('button', { class: 'carousel-button next' }, ARROW_NEXT_IMG);
 
@@ -91,8 +93,7 @@ export default function createCarousel() {
   });
 
   carouselWrapper.append(previousBtn, nextBtn);
-
   setTimeout(updateCarouselPosition, 0);
-  // Return the full carousel element
+
   return carouselWrapper;
 }
