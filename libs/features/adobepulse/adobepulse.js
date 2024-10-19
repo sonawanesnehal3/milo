@@ -1,5 +1,8 @@
+import createCarousel from './carouselpulse.js';
+
 let config;
 let createTag;
+let loadStyle;
 
 const MEDIA_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -46,10 +49,9 @@ function createToaster() {
   navArrow.appendChild(navArrowInner);
   toasterContent.appendChild(closeButton);
   toasterContent.appendChild(navArrow);
-  
 
-  const text = createTag('p', {}, 'This is an empty toaster.');
-  toasterContent.appendChild(text);
+  const carousel = createCarousel();
+  toasterContent.appendChild(carousel);
 
   toaster.appendChild(toasterContent);
 
@@ -86,6 +88,7 @@ async function appendMediaIcon() {
     }
   });
 
+  // Observe the DOM for changes to attach the icon after the navigation is loaded
   observer.observe(document, {
     childList: true,
     subtree: true,
