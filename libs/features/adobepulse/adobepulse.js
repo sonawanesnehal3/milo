@@ -1,6 +1,5 @@
 let config;
 let createTag;
-let loadStyle;
 
 const MEDIA_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -54,16 +53,6 @@ function createToaster() {
 
   toaster.appendChild(toasterContent);
 
-  // Append toaster to the .feds-nav-wrapper (inside global navigation)
-  // const navWrapper = document.querySelector('.feds-nav-wrapper');
-  // navWrapper.appendChild(toaster);
-
-  // const mediaIcon = document.querySelector('.media-icon-container');
-  // const rect = mediaIcon.getBoundingClientRect();
-
-  // // Adjust position to align properly inside the navigation
-  // toaster.style.top = `${rect.bottom - navWrapper.getBoundingClientRect().top + 10}px`;
-  // toaster.style.left = `${rect.left - navWrapper.getBoundingClientRect().left}px`;
   const observer = new MutationObserver(() => {
     const mediaContainer = document.querySelector('.media-icon-container');
     if (mediaContainer) {
@@ -97,7 +86,6 @@ async function appendMediaIcon() {
     }
   });
 
-  // Observe the DOM for changes to attach the icon after the navigation is loaded
   observer.observe(document, {
     childList: true,
     subtree: true,
