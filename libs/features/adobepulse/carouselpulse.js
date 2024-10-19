@@ -1,11 +1,6 @@
-// carouselpulse.js
-const ARROW_NEXT_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-  <path d="M10,2 L14,6 L10,10" stroke="black" fill="none"></path>
-</svg>`;
+const ARROW_NEXT_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>`;
 
-const ARROW_PREVIOUS_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-  <path d="M10,2 L6,6 L10,10" stroke="black" fill="none"></path>
-</svg>`;
+const ARROW_PREVIOUS_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>`;
 
 function createTag(tag, attributes, innerHTML) {
   const element = document.createElement(tag);
@@ -22,19 +17,19 @@ export default function createCarousel() {
     {
       title: 'Slide 1 Title',
       desc: 'Breaking news from The Daily MAX! 🎙️ Photoshop latest upgrades are a game-changer: the new Remove tool wipes away distractions like people and wires, while Generative Fill and Expand boost your creative freedom! 🎨✨',
-      img: 'https://via.placeholder.com/400x300', // Sample image with width 200px
+      img: 'https://via.placeholder.com/500x500', // Sample image with width 200px
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 2 Title',
       desc: 'Discover the latest Photoshop features that will redefine your creative process! From seamless distraction removal to next-gen generative AI capabilities, these updates are here to supercharge your workflow. 🚀',
-      img: 'https://via.placeholder.com/400x300',
+      img: 'https://via.placeholder.com/500x500',
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 3 Title',
       desc: 'Strap on your boots and grab your sparkles! 💖✨ We’re ‘dancing through the chaos’ as we turn this cowboy karaoke night into art!',
-      img: 'https://via.placeholder.com/400x300',
+      img: 'https://via.placeholder.com/500x500',
       actionButton: 'Learn More',
     },
   ];

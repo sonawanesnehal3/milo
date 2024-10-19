@@ -716,16 +716,17 @@ header.global-navigation {
   }
 }
 
+
 /* pulse-toaster.css */
 .pulse-toaster {
   position: absolute;
   display: flex;
-  border: 1px solid #8a8a8a;
+  /* border: 1px solid #8a8a8a; */
   border-radius: 5px;
   right: -5px;
   top: 70px;
   background-color: #fff;
-  width: 500px;
+  width: 600px;
   height: auto;
   z-index: 100;
   font-size: 15px;
@@ -736,15 +737,17 @@ header.global-navigation {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  /* max-height:300px; */
+  max-height: 1000px;
   box-sizing: border-box;
   overflow: visible;
+  box-shadow: 0 0 .188rem 0 rgba(0,0,0,.12),0 .188rem .5rem 0 rgba(0,0,0,.04),0 .25rem 1rem 0 rgba(0,0,0,.08);
 }
 
 .pulse-toaster-content {
   /* padding-left: 5px; */
   width: 100%;
   flex-shrink: 1;
+  height: auto;
 }
 
 .nav-arrow {
@@ -753,7 +756,7 @@ header.global-navigation {
   border-width: 9px;
   border-color: transparent;
   border-top-width: 0;
-  border-bottom: 9px solid black;
+  border-bottom: 9px solid #fff;
   width: 0;
   height: 0;
   font-size: 0;
@@ -810,7 +813,7 @@ button.dialog-close {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 600px;
+  max-height: 1200px;
   overflow-y: hidden;
   box-sizing: border-box;
   padding: 5px;
@@ -849,6 +852,7 @@ button.dialog-close {
   margin-bottom: 5px;
   margin-top: 5px;
   font-size: 18px;
+  color: #2c2c2c;
 }
 
 /* Description container */
@@ -867,7 +871,7 @@ button.dialog-close {
 
 .carousel-slide p {
   margin-bottom: 10px;
-  font-size: 15px;
+  font-size: 16px;
   font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
   /* max-width: 100%; */
   /* word-wrap: break-word; */
@@ -877,21 +881,24 @@ button.dialog-close {
   overflow: visible;
   overflow-wrap: break-word;
   margin: 0 0 10px;
-  padding: 0 0 0 0;
+  padding: 5px 0 5px;
   max-width: 100%;
+  color: #292929;
 }
 
 .carousel-slide button.carousel-button {
-  padding: 6px 14px;
+  padding: 6px 16px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   text-decoration: none;
   font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  margin-bottom: 5px;
+  line-height: 20px;
 }
 
 .carousel-slide button.carousel-button:hover {
@@ -904,9 +911,10 @@ button.carousel-button.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgb(0 0 0 / 8%);
-  border: none;
-  border-radius: 50%;
+  background-color: #fafafa;
+  /* border: none; */
+  border-radius: 100%;
+  border-style: solid;
   width: 30px;
   height: 30px;
   display: flex;
@@ -914,10 +922,14 @@ button.carousel-button.next {
   align-items: center;
   cursor: pointer;
   z-index: 10;
+  border-width: 1px;
+  border-color: #e1e1e1;
+  transition: background .3s ease, outline .3s ease, border .3s ease, box-shadow .3s ease;
 }
 
 button.carousel-button.previous {
   left: 10px;
+  transform: rotate(180deg);
 }
 
 button.carousel-button.next {
@@ -926,6 +938,6 @@ button.carousel-button.next {
 
 button.carousel-button svg {
   fill: white;
-  width: 24px;
-  height: 24px;
+  width: 12px;
+  height: 12px;
 }
