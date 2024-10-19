@@ -34,7 +34,6 @@ export default function createCarousel() {
     },
   ];
 
-  // Create container for slides
   const slideContainer = createTag('div', { class: 'carousel-slides' });
 
   // Set width for slides container based on number of slides
@@ -47,11 +46,9 @@ export default function createCarousel() {
     // Set each slide to take full width of the container
     slideElement.style.width = `${100 / slides.length}%`;
 
-    // Append title, image, description, and button one below the other
     const title = createTag('h3', { class: 'carousel-title' }, slide.title);
     const img = createTag('img', { src: slide.img, alt: slide.title });
 
-    // Create a div for the description
     const descWrapper = createTag('div', { class: 'carousel-desc' });
     const desc = createTag('p', {}, slide.desc);
     descWrapper.appendChild(desc); // Add the description to the wrapper
@@ -64,6 +61,7 @@ export default function createCarousel() {
   carouselWrapper.appendChild(slideContainer);
 
   let currentIndex = 0;
+  let autoSlideInterval;
 
   function updateCarouselPosition() {
     const slideWidth = 100; // Since each slide is now percentage-based
@@ -87,6 +85,23 @@ export default function createCarousel() {
   });
 
   carouselWrapper.append(previousBtn, nextBtn);
+
+  // Function to start the auto slide
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+      currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+      updateCarouselPosition();
+    }, 5000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+
+  carouselWrapper.addEventListener('mouseover', stopAutoSlide);
+  carouselWrapper.addEventListener('mouseout', startAutoSlide);
+  startAutoSlide();
+
   setTimeout(updateCarouselPosition, 0);
 
   return carouselWrapper;
