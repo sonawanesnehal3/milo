@@ -823,9 +823,8 @@ button.dialog-close {
   width: 100%;
   flex-wrap: nowrap;
   height: auto;
-  /* overflow: visible; */
+  overflow: visible;
 }
-
 
 /* Each individual slide */
 .carousel-slide {
@@ -837,7 +836,7 @@ button.dialog-close {
   align-items: center;
   text-align: center;
   height: auto;
-  /* overflow: visible; */
+  overflow: hidden;
 }
 
 .carousel-slide img {
@@ -854,32 +853,45 @@ button.dialog-close {
 
 /* Description container */
 .carousel-desc {
-  max-width: 100%; /* Ensure the description container takes up 90% of the width */
-  text-align: center; /* Align description text to the left */
+  max-width: 90%; /* Ensure the description container takes up 90% of the width */
+  text-align: left; /* Align description text to the left */
   height: auto;
-  /* margin-top: 10px; */
-  width: auto;
+  margin: 0 auto;
+  width: 30%;
+  padding: 0 10px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .carousel-slide p {
-  /* margin-bottom: 10px; */
-  font-size: 14px;
-  max-width: 100%;
-  word-wrap: break-word;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  /* max-width: 100%; */
+  /* word-wrap: break-word; */
   white-space: normal;
   line-height: 1.4;
   height: auto;
   overflow: visible;
   overflow-wrap: break-word;
+  margin: 0 0 10px;
+  padding: 0 0 0 0;
+  max-width: 100%;
 }
 
 .carousel-slide button.carousel-button {
-  padding: 8px 16px;
+  padding: 6px 14px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 16px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
 }
 
 .carousel-slide button.carousel-button:hover {
@@ -892,7 +904,7 @@ button.carousel-button.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgb(0 0 0 / 34%);
+  background-color: rgb(0 0 0 / 8%);
   border: none;
   border-radius: 50%;
   width: 30px;

@@ -21,20 +21,20 @@ export default function createCarousel() {
   const slides = [
     {
       title: 'Slide 1 Title',
-      desc: 'Creative pros, your quick-and-easy toolkit just got an upgrade!',
-      img: 'https://via.placeholder.com/400x200', // Sample image with width 200px
+      desc: 'Breaking news from The Daily MAX! 🎙️ Photoshop latest upgrades are a game-changer: the new Remove tool wipes away distractions like people and wires, while Generative Fill and Expand boost your creative freedom! 🎨✨',
+      img: 'https://via.placeholder.com/400x300', // Sample image with width 200px
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 2 Title',
-      desc: 'This is the description for slide 2',
-      img: 'https://via.placeholder.com/400x200',
+      desc: 'Discover the latest Photoshop features that will redefine your creative process! From seamless distraction removal to next-gen generative AI capabilities, these updates are here to supercharge your workflow. 🚀',
+      img: 'https://via.placeholder.com/400x300',
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 3 Title',
-      desc: 'This is the description for slide 3',
-      img: 'https://via.placeholder.com/400x200',
+      desc: 'Strap on your boots and grab your sparkles! 💖✨ We’re ‘dancing through the chaos’ as we turn this cowboy karaoke night into art!',
+      img: 'https://via.placeholder.com/400x300',
       actionButton: 'Learn More',
     },
   ];
@@ -55,12 +55,11 @@ export default function createCarousel() {
     // Append title, image, description, and button one below the other
     const title = createTag('h3', { class: 'carousel-title' }, slide.title);
     const img = createTag('img', { src: slide.img, alt: slide.title });
-    
+
     // Create a div for the description
     const descWrapper = createTag('div', { class: 'carousel-desc' });
     const desc = createTag('p', {}, slide.desc);
     descWrapper.appendChild(desc); // Add the description to the wrapper
-    
     const button = createTag('button', { class: 'carousel-button' }, slide.actionButton);
 
     slideElement.append(title, img, descWrapper, button);

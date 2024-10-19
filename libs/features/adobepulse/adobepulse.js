@@ -5,17 +5,20 @@ let createTag;
 let loadStyle;
 
 const MEDIA_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-  <g transform="translate(-10500 3403)">
-    <circle cx="10" cy="10" r="10" transform="translate(10500 -3403)" fill="#707070"/>
-    <path d="M10,4A5.373,5.373,0,0,0,4.5,9.5C4.5,13,10,19,10,19s5.5-6,5.5-9.5A5.373,5.373,0,0,0,10,4Zm0,7.5A2,2,0,1,1,12,9.5,2,2,0,0,1,10,11.5Z" transform="translate(10500 -3403)" fill="#fff"/>
-  </g>
-</svg>`;
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <circle cx="12" cy="12" r="12" fill="#9a9a9a"/>
+  <rect x="6" y="6" width="12" height="12" rx="2" ry="2" fill="white"/>
+  <rect x="7.5" y="8" width="9" height="2" fill="#9a9a9a"/>
+  <rect x="7.5" y="11" width="5" height="2" fill="#9a9a9a"/>
+  <rect x="7.5" y="14" width="5" height="2" fill="#9a9a9a"/>
+  <rect x="13.5" y="11" width="3" height="5" fill="#9a9a9a"/>
+</svg>
+`;
 
 const CLOSE_ICON = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <g transform="translate(-10500 3403)">
-    <circle cx="10" cy="10" r="10" transform="translate(10500 -3403)" fill="#707070"/>
+    <circle cx="10" cy="10" r="10" transform="translate(10500 -3403)" fill="#9a9a9a"/>
     <line y1="8" x2="8" transform="translate(10506 -3397)" fill="none" stroke="#fff" stroke-width="2"/>
     <line x1="8" y1="8" transform="translate(10506 -3397)" fill="none" stroke="#fff" stroke-width="2"/>
   </g>
