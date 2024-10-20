@@ -30,7 +30,6 @@ function closeToaster(toaster) {
   toaster.remove();
 }
 
-// Function to check if the click is outside the toaster and close it
 function handleClickOutside(event) {
   const toaster = document.querySelector('.pulse-toaster');
   if (toaster && !toaster.contains(event.target) && !event.target.closest('.media-icon-container')) {
@@ -39,11 +38,10 @@ function handleClickOutside(event) {
   }
 }
 
-// Create a simple toaster element (with nav-arrow)
 function createToaster() {
   const existingToaster = document.querySelector('.pulse-toaster');
   if (existingToaster) {
-    existingToaster.remove(); // Remove existing toaster if one is open
+    existingToaster.remove();
   }
 
   const toaster = createTag('div', { class: 'pulse-toaster' });
@@ -78,7 +76,15 @@ function createToaster() {
   }, 0);
 }
 
-// Helper function to attach media icon and event
+function toggleToaster() {
+  const existingToaster = document.querySelector('.pulse-toaster');
+  if (existingToaster) {
+    closeToaster(existingToaster);
+  } else {
+    createToaster();
+  }
+}
+
 function attachMediaIcon(navWrapper) {
   const mediaIcon = document.createElement('div');
   mediaIcon.classList.add('media-icon-container');
@@ -87,15 +93,14 @@ function attachMediaIcon(navWrapper) {
 
   // Attach click event to open the toaster
   mediaIcon.addEventListener('click', (event) => {
-    event.stopPropagation(); // Prevent closing immediately on click
+    event.stopPropagation();
     console.log('Media icon clicked');
-    createToaster(); // Call createToaster here
+    toggleToaster();
   });
 }
 
 // Function to add media icon and attach click event
 async function appendMediaIcon() {
-  // First, check if the navigation is already loaded
   let navWrapper = document.querySelector('.feds-nav-wrapper');
   if (navWrapper) {
     attachMediaIcon(navWrapper);
@@ -104,7 +109,7 @@ async function appendMediaIcon() {
       navWrapper = document.querySelector('.feds-nav-wrapper');
       if (navWrapper) {
         attachMediaIcon(navWrapper);
-        observer.disconnect(); // Stop observing once the icon is added
+        observer.disconnect();
       }
     });
     observer.observe(document, {
@@ -119,6 +124,5 @@ export default async function loadPulseToaster(conf, createTagFunc, loadStyleFun
   createTag = createTagFunc;
   loadStyle = loadStyleFunc;
 
-  // Add media icon to the global navigation
   await appendMediaIcon();
 }
