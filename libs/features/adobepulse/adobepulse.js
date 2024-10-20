@@ -30,6 +30,15 @@ function closeToaster(toaster) {
   toaster.remove();
 }
 
+// Function to check if the click is outside the toaster and close it
+function handleClickOutside(event) {
+  const toaster = document.querySelector('.pulse-toaster');
+  if (toaster && !toaster.contains(event.target) && !event.target.closest('.media-icon-container')) {
+    closeToaster(toaster);
+    document.removeEventListener('click', handleClickOutside);
+  }
+}
+
 // Create a simple toaster element (with nav-arrow)
 function createToaster() {
   const existingToaster = document.querySelector('.pulse-toaster');
@@ -50,7 +59,7 @@ function createToaster() {
   });
 
   navArrow.appendChild(navArrowInner);
-  toasterContent.appendChild(closeButton);
+  //toasterContent.appendChild(closeButton);
   toasterContent.appendChild(navArrow);
 
   const carousel = createCarousel();
@@ -58,44 +67,51 @@ function createToaster() {
 
   toaster.appendChild(toasterContent);
 
-  const observer = new MutationObserver(() => {
-    const mediaContainer = document.querySelector('.media-icon-container');
-    if (mediaContainer) {
-      mediaContainer.appendChild(toaster);
-      observer.disconnect();
-    }
-  });
-  observer.observe(document, {
-    childList: true,
-    subtree: true,
+  const mediaContainer = document.querySelector('.media-icon-container');
+  if (mediaContainer) {
+    mediaContainer.appendChild(toaster);
+  }
+
+  // Listen for clicks outside the toaster to close it
+  setTimeout(() => {
+    document.addEventListener('click', handleClickOutside);
+  }, 0);
+}
+
+// Helper function to attach media icon and event
+function attachMediaIcon(navWrapper) {
+  const mediaIcon = document.createElement('div');
+  mediaIcon.classList.add('media-icon-container');
+  mediaIcon.innerHTML = MEDIA_ICON;
+  navWrapper.appendChild(mediaIcon);
+
+  // Attach click event to open the toaster
+  mediaIcon.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent closing immediately on click
+    console.log('Media icon clicked');
+    createToaster(); // Call createToaster here
   });
 }
 
 // Function to add media icon and attach click event
 async function appendMediaIcon() {
-  const observer = new MutationObserver(() => {
-    const navWrapper = document.querySelector('.feds-nav-wrapper');
-    if (navWrapper) {
-      const mediaIcon = document.createElement('div');
-      mediaIcon.classList.add('media-icon-container');
-      mediaIcon.innerHTML = MEDIA_ICON;
-      navWrapper.appendChild(mediaIcon);
-
-      // Attach click event to open the toaster
-      mediaIcon.addEventListener('click', () => {
-        console.log('Media icon clicked');
-        createToaster(); // Call createToaster here
-      });
-
-      observer.disconnect();
-    }
-  });
-
-  // Observe the DOM for changes to attach the icon after the navigation is loaded
-  observer.observe(document, {
-    childList: true,
-    subtree: true,
-  });
+  // First, check if the navigation is already loaded
+  let navWrapper = document.querySelector('.feds-nav-wrapper');
+  if (navWrapper) {
+    attachMediaIcon(navWrapper);
+  } else {
+    const observer = new MutationObserver(() => {
+      navWrapper = document.querySelector('.feds-nav-wrapper');
+      if (navWrapper) {
+        attachMediaIcon(navWrapper);
+        observer.disconnect(); // Stop observing once the icon is added
+      }
+    });
+    observer.observe(document, {
+      childList: true,
+      subtree: true,
+    });
+  }
 }
 
 export default async function loadPulseToaster(conf, createTagFunc, loadStyleFunc) {
