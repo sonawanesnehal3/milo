@@ -16,19 +16,19 @@ export default function createCarousel() {
   const slides = [
     {
       title: 'Slide 1 Title',
-      desc: 'Breaking news from The Daily MAX! 🎙️ Photoshop latest upgrades are a game-changer: the new Remove tool wipes away distractions like people and wires, while Generative Fill and Expand boost your creative freedom! 🎨✨',
+      desc: 'Fall vibes, animated! 🍂 Watch this cozy cabin to life with a little chimney smoke, using a video asset to capture the perfect touch of autumn magic. Inspired by his wife’s love for New Hampshire’s stunning fall season, this one’s serving all the cozy feels! 🏡🍁',
       img: 'https://via.placeholder.com/500x500', // Sample image with width 200px
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 2 Title',
-      desc: 'Discover the latest Photoshop features that will redefine your creative process! From seamless distraction removal to next-gen generative AI capabilities, these updates are here to supercharge your workflow. 🚀',
+      desc: 'Let nature’s beauty spark your next big idea 🌸✨ Stunning lotus design is the reminder we all need to take in the world around us and let the inspiration flow.',
       img: 'https://via.placeholder.com/500x500',
       actionButton: 'Learn More',
     },
     {
       title: 'Slide 3 Title',
-      desc: 'Strap on your boots and grab your sparkles! 💖✨ We’re ‘dancing through the chaos’ as we turn this cowboy karaoke night into art!',
+      desc: 'Get ready to slam dunk your design game with @gvsser! 🏀✨ They’re dribbling through Generative Workspace in Photoshop (beta) to create a slammin’ basketball poster that’s a total game changer. Download or update Photoshop today!✨',
       img: 'https://via.placeholder.com/500x500',
       actionButton: 'Learn More',
     },
