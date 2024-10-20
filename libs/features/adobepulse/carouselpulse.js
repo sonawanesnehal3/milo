@@ -17,7 +17,7 @@ export default function createCarousel() {
     {
       title: 'Slide 1 Title',
       desc: 'Fall vibes, animated! 🍂 Watch this cozy cabin to life with a little chimney smoke, using a video asset to capture the perfect touch of autumn magic. Inspired by his wife’s love for New Hampshire’s stunning fall season, this one’s serving all the cozy feels! 🏡🍁',
-      img: 'https://via.placeholder.com/500x500', // Sample image with width 200px
+      img: 'https://via.placeholder.com/500x500', // Sample image with width 500px
       actionButton: 'Learn More',
     },
     {
@@ -36,7 +36,13 @@ export default function createCarousel() {
 
   const slideContainer = createTag('div', { class: 'carousel-slides' });
 
-  // Set width for slides container based on number of slides
+  // Clone the first and last slides
+  const firstSlideClone = { ...slides[0] };
+  const lastSlideClone = { ...slides[slides.length - 1] };
+  slides.unshift(lastSlideClone);
+  slides.push(firstSlideClone);
+
+  // Set width for slides container based on the number of slides (including clones)
   slideContainer.style.width = `${slides.length * 100}%`;
 
   // Generate each slide
@@ -48,25 +54,23 @@ export default function createCarousel() {
 
     const title = createTag('h3', { class: 'carousel-title' }, slide.title);
     const img = createTag('img', { src: slide.img, alt: slide.title });
-
     const descWrapper = createTag('div', { class: 'carousel-desc' });
     const desc = createTag('p', {}, slide.desc);
     descWrapper.appendChild(desc); // Add the description to the wrapper
     const button = createTag('button', { class: 'carousel-button' }, slide.actionButton);
-
     slideElement.append(title, img, descWrapper, button);
     slideContainer.appendChild(slideElement);
   });
 
   carouselWrapper.appendChild(slideContainer);
 
-  let currentIndex = 0;
+  let currentIndex = 1; // Start from the first "real" slide
   let autoSlideInterval;
 
-  function updateCarouselPosition() {
+  function updateCarouselPosition(instant = false) {
     const slideWidth = 100; // Since each slide is now percentage-based
+    slideContainer.style.transition = instant ? 'none' : 'transform 0.5s ease-in-out';
     slideContainer.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
-    slideContainer.style.transition = 'transform 0.5s ease-in-out';
   }
 
   const previousBtn = createTag('button', { class: 'carousel-button previous' }, ARROW_PREVIOUS_IMG);
@@ -74,14 +78,30 @@ export default function createCarousel() {
 
   previousBtn.addEventListener('click', (event) => {
     event.stopPropagation();
-    currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+    currentIndex -= 1;
     updateCarouselPosition();
+
+    // Transition from first slide clone to last slide
+    if (currentIndex === 0) {
+      setTimeout(() => {
+        currentIndex = slides.length - 2;
+        updateCarouselPosition(true);
+      }, 500);
+    }
   });
 
   nextBtn.addEventListener('click', (event) => {
     event.stopPropagation();
-    currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+    currentIndex += 1;
     updateCarouselPosition();
+
+    // Transition from last slide clone to first slide
+    if (currentIndex === slides.length - 1) {
+      setTimeout(() => {
+        currentIndex = 1;
+        updateCarouselPosition(true);
+      }, 500);
+    }
   });
 
   carouselWrapper.append(previousBtn, nextBtn);
@@ -89,9 +109,8 @@ export default function createCarousel() {
   // Function to start the auto slide
   function startAutoSlide() {
     autoSlideInterval = setInterval(() => {
-      currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
-      updateCarouselPosition();
-    }, 5000);
+      nextBtn.click();
+    }, 5000); // Automatically move to the next slide every 5 seconds
   }
 
   function stopAutoSlide() {
