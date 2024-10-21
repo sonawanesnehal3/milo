@@ -14,7 +14,8 @@ function createTag(tag, attributes, innerHTML) {
 }
 
 async function fetchPosts(url) {
-  const posts = [{ title: 'Adobe Product Name', desc: 'This is some monkey PS art', mediaUrl: 'http://localhost:3005/videos/photoshop-monkey.mov', actionButton: 'Get Photoshop', mediaType: 'VIDEO' }];
+  // const posts = [{ title: 'Adobe Product Name', desc: 'This is some monkey PS art', mediaUrl: 'http://localhost:3005/videos/photoshop-monkey.mov', actionButton: 'Get Photoshop', mediaType: 'VIDEO' }];
+  const posts = [];
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -25,9 +26,14 @@ async function fetchPosts(url) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const resp = await response.json();
+    const data = resp.slides;
     data.forEach((item) => {
-      posts.push({ title: 'Adobe Product Name', desc: item.caption, mediaUrl: item.media, actionButton: 'CTA Type', mediaType: item.mediaType });
+      // eslint-disable-next-line max-len
+      posts.push({
+        // eslint-disable-next-line max-len
+        title: item.title || item.product, product: item.product, desc: item.desc || item.caption, mediaUrl: item.media, actionButton: item.actionButton, mediaType: item.mediaType, link: item.link,
+      });
     });
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -38,23 +44,35 @@ async function fetchPosts(url) {
 
 export default async function createCarousel() {
   const carouselWrapper = createTag('div', { class: 'carousel-wrapper' });
-  const url = 'http://localhost:3005/api/posts'; // Replace with your actual URL
+  let profile = null;
   const { default: getUserEntitlements } = await import('../../blocks/global-navigation/utilities/getUserEntitlements.js');
   const entitlements = await getUserEntitlements();
   let codes = entitlements.fulfilled_codes;
   codes = Object.keys(codes).filter((e) => codes[e]).toString();
-  const userProducts = products.filter((product) => codes.includes(product.toLowerCase()));
+  const userProducts = products.filter((product) => codes.includes(product.toLowerCase())).join(',');
   console.log(userProducts);
+  let url = '';
+  if (!window.adobeIMS.isSignedInUser()) {
+    // const ecid = window.alloy ? await window.alloy('getIdentity')
+    //   .then((data) => data?.identity?.ECID).catch(() => undefined) : undefined;
+    const ecid = '02279645834466605853330731451781951578';
+    url = `http://localhost:3005/api/posts/anon?ecid=${ecid}`;
+  } else {
+    profile = await window.adobeIMS.getProfile();
+    url = `http://localhost:3005/api/posts/filter?email=${encodeURIComponent(profile.email)}&entitlements=${userProducts}`;
+  }
+  // const url = 'http://localhost:3005/api/posts';
 
   const slides = await fetchPosts(url);
 
   const slideContainer = createTag('div', { class: 'carousel-slides' });
 
   // Clone the first and last slides
-  const firstSlideClone = { ...slides[0] };
-  const lastSlideClone = { ...slides[slides.length - 1] };
-  slides.unshift(lastSlideClone);
-  slides.push(firstSlideClone);
+  console.log(slides);
+  // const firstSlideClone = { ...slides[0] };
+  // const lastSlideClone = { ...slides[slides.length - 1] };
+  // slides.unshift(lastSlideClone);
+  // slides.push(firstSlideClone);
 
   // Set width for slides container based on the number of slides (including clones)
   slideContainer.style.width = `${slides.length * 100}%`;
@@ -68,8 +86,8 @@ export default async function createCarousel() {
 
     const title = createTag('h3', { class: 'carousel-title' }, slide.title);
     let media = null;
-    if (slide.mediaType.toLowerCase() === 'image') {
-      media = createTag('img', { class: 'carousel-img', src: slide.mediaUrl, alt: slide.title });
+    if (!slide.mediaType || slide.mediaType?.toLowerCase() === 'image') {
+      media = createTag('img', { class: 'carousel-img', src: slide.mediaUrl || `http://localhost:3005/images/${slide.product}_LOGO.webp`, alt: slide.title });
     } else {
       media = createTag('video', {
         class: 'carousel-video',
@@ -88,7 +106,7 @@ export default async function createCarousel() {
     const descWrapper = createTag('div', { class: 'carousel-desc' });
     const desc = createTag('p', {}, slide.desc);
     descWrapper.appendChild(desc); // Add the description to the wrapper
-    const button = createTag('button', { class: 'carousel-button' }, slide.actionButton);
+    const button = createTag('a', { class: 'carousel-button', href: slide.link }, slide.actionButton);
     slideElement.append(title, media, descWrapper, button);
     slideContainer.appendChild(slideElement);
   });
@@ -138,21 +156,21 @@ export default async function createCarousel() {
   carouselWrapper.append(previousBtn, nextBtn);
 
   // Function to start the auto slide
-  function startAutoSlide() {
-    autoSlideInterval = setInterval(() => {
-      nextBtn.click();
-    }, 5000); // Automatically move to the next slide every 5 seconds
-  }
+  // function startAutoSlide() {
+  //   autoSlideInterval = setInterval(() => {
+  //     nextBtn.click();
+  //   }, 5000); // Automatically move to the next slide every 5 seconds
+  // }
 
-  function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
-  }
+  // function stopAutoSlide() {
+  //   clearInterval(autoSlideInterval);
+  // }
 
-  carouselWrapper.addEventListener('mouseover', stopAutoSlide);
-  carouselWrapper.addEventListener('mouseout', startAutoSlide);
-  startAutoSlide();
+  // carouselWrapper.addEventListener('mouseover', stopAutoSlide);
+  // carouselWrapper.addEventListener('mouseout', startAutoSlide);
+  // setTimeout(() => { startAutoSlide(); }, 10000);
 
-  setTimeout(updateCarouselPosition, 0);
+  // setTimeout(updateCarouselPosition, 0);
 
   return carouselWrapper;
 }

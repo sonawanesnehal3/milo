@@ -896,7 +896,7 @@ button.dialog-close {
   color: #292929;
 }
 
-.carousel-slide button.carousel-button {
+.carousel-slide .carousel-button {
   padding: 6px 16px;
   background-color: #007bff;
   color: white;
