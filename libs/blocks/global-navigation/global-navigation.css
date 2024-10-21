@@ -859,7 +859,7 @@ button.dialog-close {
   color: #2c2c2c;
 }
 
-.carousel-img {
+.carousel-img,.carousel-video {
   width: 500px;
   height: 500px;
 }
