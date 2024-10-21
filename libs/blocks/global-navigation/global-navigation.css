@@ -859,6 +859,11 @@ button.dialog-close {
   color: #2c2c2c;
 }
 
+.carousel-img {
+  width: 500px;
+  height: 500px;
+}
+
 /* Description container */
 .carousel-desc {
   max-width: 90%; /* Ensure the description container takes up 90% of the width */

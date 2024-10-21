@@ -38,7 +38,8 @@ function handleClickOutside(event) {
   }
 }
 
-function createToaster() {
+// Create a simple toaster element (with nav-arrow)
+async function createToaster() {
   const existingToaster = document.querySelector('.pulse-toaster');
   if (existingToaster) {
     existingToaster.remove();
@@ -60,7 +61,7 @@ function createToaster() {
   //toasterContent.appendChild(closeButton);
   toasterContent.appendChild(navArrow);
 
-  const carousel = createCarousel();
+  const carousel = await createCarousel();
   toasterContent.appendChild(carousel);
 
   toaster.appendChild(toasterContent);

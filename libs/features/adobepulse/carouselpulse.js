@@ -1,6 +1,6 @@
-const ARROW_NEXT_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>`;
+const ARROW_NEXT_IMG = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>';
 
-const ARROW_PREVIOUS_IMG = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>`;
+const ARROW_PREVIOUS_IMG = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16"><defs><style>.a{fill:#f0f;opacity:0;}.b{fill:#767676;}</style></defs><g transform="translate(10 16) rotate(180)"><rect class="a" width="10" height="16"/><path class="b" d="M9.115,13.853l0,0L3.051,8,9.117,2.15l0,0A1.246,1.246,0,1,0,7.386.353l0,0L7.367.366h0L.382,7.1l0,0a1.237,1.237,0,0,0,0,1.794l0,0,6.982,6.732,0,0,.015.014,0,0a1.246,1.246,0,1,0,1.73-1.794Z"/></g></svg>';
 
 function createTag(tag, attributes, innerHTML) {
   const element = document.createElement(tag);
@@ -11,28 +11,35 @@ function createTag(tag, attributes, innerHTML) {
   return element;
 }
 
-export default function createCarousel() {
+async function fetchPosts(url) {
+  const posts = [];
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }, // Replace with your actual access token if needed
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    data.forEach((item) => {
+      posts.push({ title: 'Adobe Product Name', desc: item.caption, img: item.media, actionButton: 'CTA Type' });
+    });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+  console.log(posts);
+  return posts;
+}
+
+export default async function createCarousel() {
   const carouselWrapper = createTag('div', { class: 'carousel-wrapper' });
-  const slides = [
-    {
-      title: 'Slide 1 Title',
-      desc: 'Fall vibes, animated! 🍂 Watch this cozy cabin to life with a little chimney smoke, using a video asset to capture the perfect touch of autumn magic. Inspired by his wife’s love for New Hampshire’s stunning fall season, this one’s serving all the cozy feels! 🏡🍁',
-      img: 'https://via.placeholder.com/500x500', // Sample image with width 500px
-      actionButton: 'Learn More',
-    },
-    {
-      title: 'Slide 2 Title',
-      desc: 'Let nature’s beauty spark your next big idea 🌸✨ Stunning lotus design is the reminder we all need to take in the world around us and let the inspiration flow.',
-      img: 'https://via.placeholder.com/500x500',
-      actionButton: 'Learn More',
-    },
-    {
-      title: 'Slide 3 Title',
-      desc: 'Get ready to slam dunk your design game with @gvsser! 🏀✨ They’re dribbling through Generative Workspace in Photoshop (beta) to create a slammin’ basketball poster that’s a total game changer. Download or update Photoshop today!✨',
-      img: 'https://via.placeholder.com/500x500',
-      actionButton: 'Learn More',
-    },
-  ];
+  const url = 'http://localhost:3005/api/posts'; // Replace with your actual URL
+
+  const slides = await fetchPosts(url);
+  console.log(slides);
 
   const slideContainer = createTag('div', { class: 'carousel-slides' });
 
@@ -53,7 +60,7 @@ export default function createCarousel() {
     slideElement.style.width = `${100 / slides.length}%`;
 
     const title = createTag('h3', { class: 'carousel-title' }, slide.title);
-    const img = createTag('img', { src: slide.img, alt: slide.title });
+    const img = createTag('img', { class: 'carousel-img', src: slide.img, alt: slide.title });
     const descWrapper = createTag('div', { class: 'carousel-desc' });
     const desc = createTag('p', {}, slide.desc);
     descWrapper.appendChild(desc); // Add the description to the wrapper
