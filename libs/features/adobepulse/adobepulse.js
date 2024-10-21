@@ -5,13 +5,9 @@ let createTag;
 let loadStyle;
 
 const MEDIA_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <circle cx="12" cy="12" r="12" fill="#9a9a9a"/>
-  <rect x="6" y="6" width="12" height="12" rx="2" ry="2" fill="white"/>
-  <rect x="7.5" y="8" width="9" height="2" fill="#9a9a9a"/>
-  <rect x="7.5" y="11" width="5" height="2" fill="#9a9a9a"/>
-  <rect x="7.5" y="14" width="5" height="2" fill="#9a9a9a"/>
-  <rect x="13.5" y="11" width="3" height="5" fill="#9a9a9a"/>
+<svg class="media-icon w-[34px] h-[34px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/>
+</svg>
 </svg>
 `;
 
@@ -59,7 +55,7 @@ async function createToaster() {
 
   navArrow.appendChild(navArrowInner);
   //toasterContent.appendChild(closeButton);
-  toasterContent.appendChild(navArrow);
+  //toasterContent.appendChild(navArrow);
 
   const carousel = await createCarousel();
   toasterContent.appendChild(carousel);
@@ -87,13 +83,18 @@ function toggleToaster() {
 }
 
 function attachMediaIcon(navWrapper) {
+  const mediaIconContainer = document.createElement('div');
+  mediaIconContainer.classList.add('media-icon-container');
+  const mediaIconWrapper = document.createElement('div');
+  mediaIconWrapper.classList.add('media-icon-wrapper');
   const mediaIcon = document.createElement('div');
-  mediaIcon.classList.add('media-icon-container');
   mediaIcon.innerHTML = MEDIA_ICON;
-  navWrapper.appendChild(mediaIcon);
 
-  // Attach click event to open the toaster
-  mediaIcon.addEventListener('click', (event) => {
+  mediaIconWrapper.appendChild(mediaIcon);
+  mediaIconContainer.appendChild(mediaIconWrapper);
+  navWrapper.appendChild(mediaIconContainer);
+
+  mediaIconContainer.addEventListener('click', (event) => {
     event.stopPropagation();
     console.log('Media icon clicked');
     toggleToaster();
