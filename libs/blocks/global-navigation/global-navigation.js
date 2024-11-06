@@ -74,17 +74,18 @@ export const CONFIG = {
         name: 'profile',
         attributes: {
           isSignUpRequired: false,
+          messageEventListener: (event) => {
+            const { name, payload } = event.details;
+            if (name === 'System' && payload.subType === 'AppInitiated') {
+              window.adobeProfile?.getUserProfile()
+                .then((data) => { setUserProfile(data); })
+                .catch(() => { setUserProfile({}); });
+            }
+          },
           componentLoaderConfig: {
             config: {
               enableLocalSection: true,
               miniAppContext: {
-                onMessage: (name, payload) => {
-                  if (name === 'System' && payload.subType === 'AppInitiated') {
-                    window.adobeProfile?.getUserProfile()
-                      .then((data) => { setUserProfile(data); })
-                      .catch(() => { setUserProfile({}); });
-                  }
-                },
                 logger: {
                   trace: () => {},
                   debug: () => {},
