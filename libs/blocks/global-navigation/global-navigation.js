@@ -75,11 +75,14 @@ export const CONFIG = {
         attributes: {
           isSignUpRequired: false,
           messageEventListener: (event) => {
-            const { name, payload } = event.detail;
+            const { name, payload, executeDefaultAction } = event.detail;
             if (name === 'System' && payload.subType === 'AppInitiated') {
               window.adobeProfile?.getUserProfile()
                 .then((data) => { setUserProfile(data); })
                 .catch(() => { setUserProfile({}); });
+            }
+            if (name === 'System' && payload.subType === 'SignOut') {
+              executeDefaultAction();
             }
           },
           componentLoaderConfig: {
@@ -119,6 +122,7 @@ export const CONFIG = {
           callbacks: getConfig().jarvis?.callbacks,
         },
       },
+      cart: { name: 'cart' },
     },
   },
 };
