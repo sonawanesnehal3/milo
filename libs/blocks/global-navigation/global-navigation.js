@@ -75,7 +75,7 @@ export const CONFIG = {
         attributes: {
           isSignUpRequired: false,
           messageEventListener: (event) => {
-            const { name, payload } = event.details;
+            const { name, payload } = event.detail;
             if (name === 'System' && payload.subType === 'AppInitiated') {
               window.adobeProfile?.getUserProfile()
                 .then((data) => { setUserProfile(data); })
