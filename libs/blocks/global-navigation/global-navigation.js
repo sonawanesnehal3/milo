@@ -84,10 +84,16 @@ export const CONFIG = {
             if (name === 'System' && payload.subType === 'SignOut') {
               executeDefaultAction();
             }
+            if (name === 'System' && payload.subtype === 'ProfileSwitch') {
+              executeDefaultAction.then((profile) => {
+                if (profile) window.location.reload();
+              });
+            }
           },
           componentLoaderConfig: {
             config: {
               enableLocalSection: true,
+              enableProfileSwitcher: true,
               miniAppContext: {
                 logger: {
                   trace: () => {},
