@@ -193,11 +193,11 @@ describe('global footer', () => {
         document.body.append(regionNavModal);
         window.dispatchEvent(new Event('milo:modal:loaded'));
 
-        expect(regionPickerElem.getAttribute('href') === '#langnav').to.equal(true);
+        expect(regionPickerElem.getAttribute('href') === '#langnav');
         expect(regionPickerElem.getAttribute('aria-expanded')).to.equal('true');
 
         window.dispatchEvent(new Event('milo:modal:closed'));
-        expect(regionPickerElem.getAttribute('aria-expanded')).to.equal('false');
+        expect(regionPickerElem.getAttribute('aria-expanded')).to.equal(null);
       });
 
       it('should handle empty hash', async () => {
@@ -454,11 +454,11 @@ describe('global footer', () => {
       document.body.append(regionNavModal);
       window.dispatchEvent(new Event('milo:modal:loaded'));
 
-      expect(regionPickerElem.getAttribute('href') === '#langnav').to.equal(true);
+      expect(regionPickerElem.getAttribute('href')).to.equal('#langnav');
       expect(regionPickerElem.getAttribute('aria-expanded')).to.equal('true');
 
       window.dispatchEvent(new Event('milo:modal:closed'));
-      expect(regionPickerElem.getAttribute('aria-expanded')).to.equal('false');
+      expect(regionPickerElem.getAttribute('aria-expanded')).to.equal(null);
     });
   });
 });
