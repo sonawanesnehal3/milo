@@ -209,7 +209,6 @@ class Footer {
       <a
         href="${regionSelector.href}"
         class="${regionPickerClass}"
-        aria-expanded="false"
         aria-haspopup="true"
         role="button">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="feds-regionPicker-globe" focusable="false">
@@ -223,8 +222,6 @@ class Footer {
     this.elements.regionPicker = toFragment`<div class="${regionPickerWrapperClass}">
         ${regionPickerElem}
       </div>`;
-
-    const isRegionPickerExpanded = () => regionPickerElem.getAttribute('aria-expanded') === 'true';
 
     // Note: the region picker currently works only with Milo modals/fragments;
     // in the future we'll need to update this for non-Milo consumers
@@ -270,7 +267,7 @@ class Footer {
         });
       }
       regionPickerElem.addEventListener('click', () => {
-        if (!isRegionPickerExpanded()) {
+        if (regionPickerElem.getAttribute('aria-expanded') === null) {
           regionPickerElem.setAttribute('aria-expanded', 'true');
           // wait for the modal to load before we load the region nav
           window.addEventListener('milo:modal:loaded', loadRegionNav, { once: true });
@@ -278,9 +275,7 @@ class Footer {
       });
       // Set aria-expanded to false when region modal is closed
       window.addEventListener('milo:modal:closed', () => {
-        if (isRegionPickerExpanded()) {
-          regionPickerElem.setAttribute('aria-expanded', 'false');
-        }
+        regionPickerElem.removeAttribute('aria-expanded');
       });
     } else {
       // No hash -> region selector expands a dropdown
@@ -291,6 +286,7 @@ class Footer {
       const { default: initFragment } = await import('../fragment/fragment.js');
       await initFragment(regionSelector); // load fragment and replace original link
       // Update aria-expanded on click
+      regionPickerElem.setAttribute('aria-expanded', 'false');
       regionPickerElem.addEventListener('click', (e) => {
         e.preventDefault();
         const isDialogActive = regionPickerElem.getAttribute('aria-expanded') === 'true';
@@ -298,7 +294,7 @@ class Footer {
       });
       // Close region picker dropdown on outside click
       document.addEventListener('click', (e) => {
-        if (isRegionPickerExpanded()
+        if (regionPickerElem.getAttribute('aria-expanded') === 'true'
           && !e.target.closest(`.${regionPickerWrapperClass}`)) {
           regionPickerElem.setAttribute('aria-expanded', false);
         }
