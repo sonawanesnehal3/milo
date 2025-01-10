@@ -266,7 +266,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-aspect-ratio: 4/3) {
   /* If there is too much content, float it on multiple rows */
   .feds-footer-wrapper .feds-menu-content {
     flex-wrap: wrap;
@@ -315,6 +315,26 @@
   .feds-footer-privacySection {
     justify-content: flex-end;
     text-align: right;
+  }
+}
+
+@media (min-resolution: 2dppx) and (min-aspect-ratio: 4/3) {
+  .feds-featuredProducts {
+    display: flex;
+  }
+
+  .feds-navLink-image {
+    display: flex;
+  }
+
+  .feds-navLink-image picture,
+  .feds-navLink-image img {
+    display: block;
+  }
+
+  .feds-navLink-image picture {
+    width: max-content;
+    max-width: 25px;
   }
 }
 
