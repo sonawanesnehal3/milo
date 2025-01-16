@@ -319,16 +319,16 @@
     display: flex;
   }
 
-  .feds-navLink-image {
+  .feds-featuredProducts .feds-navLink-image {
     display: flex;
   }
 
-  .feds-navLink-image picture,
+  .feds-featuredProducts .feds-navLink-image picture,
   .feds-navLink-image img {
     display: block;
   }
 
-  .feds-navLink-image picture {
+  .feds-featuredProducts .feds-navLink-image picture {
     width: max-content;
     max-width: 25px;
   }
