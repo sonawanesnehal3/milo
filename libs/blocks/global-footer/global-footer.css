@@ -297,11 +297,6 @@
     min-width: 20%;
   }
 
-  /* Featured products */
-  .feds-featuredProducts {
-    display: flex;
-  }
-
   /* Options (region selector, social, privacy) */
   .feds-footer-options {
     flex-wrap: nowrap;
@@ -315,6 +310,27 @@
   .feds-footer-privacySection {
     justify-content: flex-end;
     text-align: right;
+  }
+}
+
+@media (min-width: 860px) {
+  /* Featured products */
+  .feds-featuredProducts {
+    display: flex;
+  }
+
+  .feds-navLink-image {
+    display: flex;
+  }
+
+  .feds-navLink-image picture,
+  .feds-navLink-image img {
+    display: block;
+  }
+
+  .feds-navLink-image picture {
+    width: max-content;
+    max-width: 25px;
   }
 }
 
