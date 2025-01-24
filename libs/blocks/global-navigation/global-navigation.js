@@ -279,7 +279,7 @@ const closeOnClickOutside = (e, isLocalNav, navWrapper) => {
   const newMobileNav = getMetadata('mobile-gnav-v2') !== 'false';
   if (!isDesktop.matches && !newMobileNav) return;
 
-  const expandedNavsSelector = `${selectors.globalNav} [aria-expanded = "true"], ${selectors.localNav} [aria-expanded = "true"]`;
+  const expandedNavsSelector = `${selectors.globalNav} [aria-expanded = "true"]:not(.universal-nav-container div), ${selectors.localNav} [aria-expanded = "true"]`;
   const openElemSelector = isLocalNav ? `${selectors.localNav} [aria-expanded = "true"]` : expandedNavsSelector;
   const isClickedElemOpen = [...document.querySelectorAll(openElemSelector)]
     .find((openItem) => openItem.parentElement.contains(e.target));
